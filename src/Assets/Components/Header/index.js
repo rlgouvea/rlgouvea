@@ -9,7 +9,7 @@ const Header = () => {
             <ul>
                 <li onClick={() => navigate('/')}>Home</li>
                 <li onClick={() => navigate()}>Clientes</li>
-                <li onClick={() => navigate()}>Proprietários</li>
+                <li onClick={() => navigate('/owners')}>Proprietários</li>
                 <li onClick={() => navigate()}>Imóveis</li>
             </ul>
         </div>
