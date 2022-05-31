@@ -7,18 +7,26 @@ export const fetchProprietarios = async () => {
     return response              
 }
 
+/******Função que faz o Get dos inquilinos******/
+export const fetchInquilinos = async () => {       
+  const response = db.collection('inquilinos')
+  const data = await response.get()
+  return data              
+}
+
 /******Função que adiciona proprietário******/
 export const addProp = async (form) => {
     
-  const response = await db.collection("proprietarios").doc().set(
-    {
-      name: form.name.value,
-      phone: form.phone.value,
-      email: form.email.value,
-      cpf: form.cpf.value,        
-    }
-  )  
-  .then(() => {    
+
+    const response = await db.collection("proprietarios").doc().set(
+      {
+        name: form.name.value,
+        phone: form.phone.value,
+        email: form.email.value,
+        cpf: form.cpf.value,        
+      }
+    )   
+    .then(() => {    
     return(
       { status: 200 }
     )
@@ -30,6 +38,22 @@ export const addProp = async (form) => {
   })   
   
   return response
+} 
+
+/******Função que adiciona inquilino******/
+export const addRenter = async (form) => {
+    
+  const response = await db.collection("inquilinos").doc().set(
+
+    {
+      name: form.name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      cpf: form.cpf.value,        
+    }
+
+  )  
+  
 } 
 
 /******Função que faz o delete dos proprietários******/
@@ -47,3 +71,7 @@ export const deleteProp = async (id) => {
   })
   return response
 }
+
+  )        
+} 
+
