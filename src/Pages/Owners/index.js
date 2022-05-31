@@ -1,14 +1,20 @@
 import { useEffect } from "react"
 import { useState } from "react"
+import AlertDelete from "../../Assets/Components/AlertDelete"
+import FormEdit from "../../Assets/Components/FormEdit"
 import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
-import { fetchProprietarios } from "../../Services/routes"
+import { deleteProp, fetchProprietarios } from "../../Services/routes"
 import {addProp} from "../../Services/routes"
 import "./ownerStyle.scss"
 
 const Owners = () => {
-    const [owners, setOwners] = useState([])
-    const [ownerId, setOwnerId] = useState([])
+    const [owners, setOwners] = useState([])    
     const [listOwners, setListOwners] = useState(false)
+    const [ownerControl, setControlOwner] = useState()
+    const [alertEdit, setAlertEdit] = useState(false)
+    const [ownerEdit, setOwnerEdit] = useState()
+    const [alertDel, setAlertDel] = useState(false)
+    const [title, setTitle] = useState()
     const [registerOwners, setRegisterOwners] = useState(false)
 
     const [form,setForm] = useState({
@@ -49,30 +55,76 @@ const Owners = () => {
 
     const getOwners = async () => {
         setOwners([])
-        const response = await fetchProprietarios()
+        const response = await fetchProprietarios()        
         response.docs.forEach(item =>{                               
-            setOwners(prevState => [...prevState, item.data()])      
-            setOwnerId(prevState => [...prevState, item.id])
-        })   
+            setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
+        })         
     }
-
+    
     const handleSubmit = async (e) =>{
         e.preventDefault()
-        addProp(form)                
-        alert("Cadastrado com sucesso!")
+        const response = await addProp(form)        
+        if(response.status === 200){
+            alert("Cadastrado com sucesso!")
+            setRegisterOwners(!registerOwners)
+            getOwners()
+        }                
+    }
+
+    const handleAlertDel = (owner) => {
+        setControlOwner(owner)
+        setTitle("Tem certeza que deseja excluir esse proprietário?")
+        setAlertDel(true)
+    }
+
+    const handleDelete = async (item) => {                
+        const response = await deleteProp(item[1].id)        
+        if(response.status === 200){
+            setAlertDel(false)            
+            getOwners()
+        }
+    }
+
+    const handleListOwners = () => {
+        setRegisterOwners(false)
+        setListOwners(!listOwners)
+    }
+
+    const handleListRegister = () => {
         setRegisterOwners(!registerOwners)
-        getOwners()
-        
-        
+        setListOwners(false)
+    }
+
+    const handleEdit = (item) => {
+        setOwnerEdit(item)
+        setAlertEdit(true)
     }
     
     return(
         <div className="containerOwner">
             <h1>Proprietarios</h1> 
             <div className="menuHead">
-                <ButtonControl onClick={()=>setListOwners(!listOwners)}>Listar Proprietários</ButtonControl>
-                <ButtonControl onClick={()=>setRegisterOwners(!registerOwners)}>Adicionar Proprietário</ButtonControl>
+                <ButtonControl onClick={()=>handleListOwners()}>Listar Proprietários</ButtonControl>
+                <ButtonControl onClick={()=>handleListRegister()}>Adicionar Proprietário</ButtonControl>
             </div>
+            {
+                alertEdit &&
+                <FormEdit
+                view={alertEdit}
+                setView={setAlertEdit}
+                item={ownerEdit}
+                />
+            }
+            {
+                alertDel &&
+                <AlertDelete
+                title={title}
+                view={alertDel}
+                setView={setAlertDel}
+                handle={handleDelete}
+                item={ownerControl}
+                />
+            }
             {
                 listOwners &&
                 <div className="table">
@@ -81,10 +133,28 @@ const Owners = () => {
                             owners &&
                             owners.map((owner, index) => (
                                 <li key={index}>
-                                    <span>{owner.name}</span>
-                                    <span>{owner.phone}</span>
-                                    <span>{owner.email}</span>
-                                    <span>{owner.cpf}</span>
+                                    <span
+                                        style={{
+                                            width: '10%',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={()=>handleEdit(owner)}
+                                    >
+                                        Edit
+                                    </span>
+                                    <span
+                                        style={{
+                                            width: '10%',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={()=>handleAlertDel(owner)}
+                                    >
+                                        Del
+                                    </span>
+                                    <span>{owner[0].name}</span>
+                                    <span>{owner[0].phone}</span>
+                                    <span>{owner[0].email}</span>
+                                    <span>{owner[0].cpf}</span>
                                 </li>
                             ))
                         }
