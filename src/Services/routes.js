@@ -18,18 +18,18 @@ export const fetchInquilinos = async () => {
 export const addProp = async (form) => {
     
 
-    const response = await db.collection("proprietarios").doc().set(
-      {
-        name: form.name.value,
-        phone: form.phone.value,
-        email: form.email.value,
-        cpf: form.cpf.value,        
-      }
-    )   
-    .then(() => {    
-    return(
-      { status: 200 }
-    )
+  const response = await db.collection("proprietarios").doc().set(
+    {
+      name: form.name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      cpf: form.cpf.value,        
+    }
+  )   
+  .then(() => {    
+  return(
+    { status: 200 }
+  )
   })
   .catch((err) => {    
     return(
@@ -72,6 +72,26 @@ export const deleteProp = async (id) => {
   return response
 }
 
-  )        
+/******Função que edição dos proprietarios******/
+export const changeOwner = async (item) => {                      
+  const response = await db.collection(`proprietarios`).doc(item.id).update(      
+    {
+      name: item.name,
+      phone: item.phone,
+      email: item.email,
+      cpf: item.cpf
+    }
+  )
+  .then(() => {    
+    return(
+      {status: 200}
+    )
+  })
+  .catch((err) => {    
+    return(
+      {status: 400}
+    )
+  })
+  return response
 } 
 
