@@ -3,16 +3,19 @@ import { useState } from "react"
 import AlertDelete from "../../Assets/Components/AlertDelete"
 import FormEdit from "../../Assets/Components/FormEdit"
 import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
-import { deleteProp, fetchProprietarios } from "../../Services/routes"
+import { changeOwner, deleteProp, fetchProprietarios } from "../../Services/routes"
 import {addProp} from "../../Services/routes"
 import "./ownerStyle.scss"
+import { MdOutlineDeleteForever } from "react-icons/md"
+import { FaEdit } from "react-icons/fa"
+
 
 const Owners = () => {
     const [owners, setOwners] = useState([])    
     const [listOwners, setListOwners] = useState(false)
     const [ownerControl, setControlOwner] = useState()
     const [alertEdit, setAlertEdit] = useState(false)
-    const [ownerEdit, setOwnerEdit] = useState()
+    const [ownerEdit, setOwnerEdit] = useState()    
     const [alertDel, setAlertDel] = useState(false)
     const [title, setTitle] = useState()
     const [registerOwners, setRegisterOwners] = useState(false)
@@ -35,6 +38,7 @@ const Owners = () => {
             error: false
         },
     })
+   
 
     const handleChange = (e) => {
         const {name, value} = e.target
@@ -47,11 +51,12 @@ const Owners = () => {
             }
         })
     }
+    
 
-    useEffect(()=>{        
+    // useEffect(()=>{        
 
-        getOwners()
-    },[])
+    //     getOwners()
+    // },[])
 
     const getOwners = async () => {
         setOwners([])
@@ -70,6 +75,7 @@ const Owners = () => {
             getOwners()
         }                
     }
+    
 
     const handleAlertDel = (owner) => {
         setControlOwner(owner)
@@ -86,6 +92,7 @@ const Owners = () => {
     }
 
     const handleListOwners = () => {
+        getOwners()
         setRegisterOwners(false)
         setListOwners(!listOwners)
     }
@@ -113,6 +120,7 @@ const Owners = () => {
                 view={alertEdit}
                 setView={setAlertEdit}
                 item={ownerEdit}
+                handle={getOwners}
                 />
             }
             {
@@ -138,18 +146,23 @@ const Owners = () => {
                                             width: '10%',
                                             cursor: 'pointer',
                                         }}
-                                        onClick={()=>handleEdit(owner)}
+                                        
                                     >
-                                        Edit
+                                        <FaEdit 
+                                        size='1.5rem' 
+                                        onClick={()=>handleEdit(owner)}
+                                        />
                                     </span>
                                     <span
                                         style={{
                                             width: '10%',
                                             cursor: 'pointer',
-                                        }}
-                                        onClick={()=>handleAlertDel(owner)}
+                                        }}                                        
                                     >
-                                        Del
+                                        <MdOutlineDeleteForever 
+                                        size='1.5rem'
+                                        onClick={()=>handleAlertDel(owner)}
+                                        />
                                     </span>
                                     <span>{owner[0].name}</span>
                                     <span>{owner[0].phone}</span>
@@ -163,7 +176,8 @@ const Owners = () => {
             }
             {
                 registerOwners &&
-                <ContainerForm>
+                <ContainerForm style={{borderRadius:' 20px',   
+                    boxShadow: '0 0 20px black'}}>
                     <form onSubmit={handleSubmit}>
                         <FormGroup>
                             <label>Nome</label>
@@ -206,8 +220,7 @@ const Owners = () => {
                         </FormGroup>
                     </form>
                 </ContainerForm>
-            }
-            
+            }                        
         </div>
     )
 }

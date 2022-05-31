@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { changeOwner } from "../../../Services/routes"
 import { ButtonControl, FormGroup } from "../GlobalStyles"
 import "./styleFormEdit.scss"
 
 
-const FormEdit = ({view, setView, item}) => {
+const FormEdit = ({view, setView, handle, item}) => {
+    
     const [form, setForm] = useState({
         name:{
             value:item[0].name
@@ -31,9 +33,21 @@ const FormEdit = ({view, setView, item}) => {
         })
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(form)
+    const handleSubmit = async (e) => {
+        e.preventDefault()       
+        const data = {
+            id: item[1].id,
+            name: form.name.value,
+            email: form.email.value,
+            phone: form.phone.value,
+            cpf: form.cpf.value
+        }
+        const response = await changeOwner(data)        
+        if(response.status === 200){
+            alert("Atualizado com sucesso!")
+            setView(!view)
+            handle()
+        } 
     }
     return(
         <div className="containerAlert">
