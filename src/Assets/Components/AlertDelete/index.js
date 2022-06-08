@@ -1,33 +1,41 @@
+import { useState } from "react"
+import { deleteProp } from "../../../Services/routes"
+import Alert from "../Alert"
 import { ButtonControl } from "../GlobalStyles"
 import "./styleAlertDel.scss"
 
 
 const AlertDelete = ({title, handle, view, setView, item}) => {
+    const [alert, setAlert] = useState(false)
+    const [titleAlert, setTitleAlert] = useState()
+
+
+    const handleDelete = async () => {                
+        const response = await deleteProp(item[1].id)        
+        if(response.status === 200){
+            setTitleAlert("Deletado com sucesso!")  
+            setAlert(true)                        
+        }
+    }
     return(
         <div className="containerAlert">
-            <div className="wrapperAlert">
+            <div className="wrapperAlertDel">
+                {
+                    alert &&
+                    <Alert
+                        title={titleAlert}
+                        handle={handle}
+                    />
+                }
                 <h3>{title}</h3>
-                <div className="controls">
+                <div className="controlsDelete">
                     <ButtonControl 
-                    onClick={()=>handle(item)}
-                    style={{
-                        position: 'absolute',
-                        bottom: '1px',
-                        left: '20%',
-                        margin: '0 10px',
-                    }}
+                    onClick={()=>handleDelete()}                    
                     >
                         Ok
                     </ButtonControl>
                     <ButtonControl 
-                    onClick={()=>setView(!view)
-                    }
-                    style={{
-                        position: 'absolute',
-                        bottom: '1px',
-                        margin: '0 10px',
-                        right: '20%',
-                    }}
+                    onClick={()=>setView(!view)}                                        
                     >
                         Cancelar
                     </ButtonControl>

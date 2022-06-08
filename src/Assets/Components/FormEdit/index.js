@@ -1,11 +1,16 @@
 import { useState } from "react"
-import { changeOwner } from "../../../Services/routes"
+import { changeOwner, deleteProp } from "../../../Services/routes"
 import { ButtonControl, FormGroup } from "../GlobalStyles"
+import AlertDelete from "../AlertDelete"
+import Alert from "../Alert"
 import "./styleFormEdit.scss"
 
 
-const FormEdit = ({view, setView, handle, item}) => {
-    
+const FormEdit = ({view, setView, item, handle}) => {    
+    const [ownerControl, setOwnerControl] = useState()
+    const [alertDel, setAlertDel] = useState(false)
+    const [alert, setAlert] = useState(false)
+    const [title, setTitle] = useState()
     const [form, setForm] = useState({
         name:{
             value:item[0].name
@@ -33,7 +38,7 @@ const FormEdit = ({view, setView, handle, item}) => {
         })
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {               
         e.preventDefault()       
         const data = {
             id: item[1].id,
@@ -44,15 +49,36 @@ const FormEdit = ({view, setView, handle, item}) => {
         }
         const response = await changeOwner(data)        
         if(response.status === 200){
-            alert("Atualizado com sucesso!")
-            setView(!view)
-            handle()
+            setTitle("Atualizado com sucesso!")  
+            setAlert(true)                      
         } 
     }
+
+    const handleAlertDel = () => {
+        setOwnerControl(item)
+        setTitle("Tem certeza que deseja excluir esse proprietário?")
+        setAlertDel(true)
+    }
+
+    
     return(
-        <div className="containerAlert">
-            <div className="wrapperAlert">  
-                <form onSubmit={handleSubmit}>
+        <div className="containerEdit">
+            <div className="wrapperEdit"> 
+                {
+                    alertDel &&
+                    <AlertDelete
+                    title={title}
+                    view={alertDel}
+                    setView={setAlertDel}
+                    handle={handle}
+                    item={ownerControl}
+                    />
+                } 
+                {
+                    alert && 
+                    <Alert title={title} view={view} setView={setView} handle={handle} />
+                }
+                <form>
                     <FormGroup>
                         <label>Nome</label>
                         <input type='text' name="name" value={form.name.value} onChange={handleChange} />
@@ -70,21 +96,27 @@ const FormEdit = ({view, setView, handle, item}) => {
                         <input type='text' name="cpf" value={form.cpf.value} onChange={handleChange} /> 
                     </FormGroup>
                              
-                    <div className="controls">
-                        <ButtonControl 
-                        //onClick={()=>handle(item)}
-                        type="submit"                        
-                        >
-                            Ok
-                        </ButtonControl>
-                        <ButtonControl 
-                        onClick={()=>setView(!view)
-                        }                        
-                        >
-                            Cancelar
-                        </ButtonControl>
-                    </div>
+                    
                 </form> 
+                <div className="controls">
+                    <ButtonControl                        
+                    onClick={handleSubmit}                        
+                    >
+                        Ok
+                    </ButtonControl>
+                    <ButtonControl 
+                    onClick={()=>setView(!view)
+                    }                        
+                    >
+                        Cancelar
+                    </ButtonControl>
+                    <ButtonControl 
+                    onClick={()=>handleAlertDel()
+                    }                        
+                    >
+                        Deletar
+                    </ButtonControl>
+                </div>
             </div>
         </div>
     )

@@ -12,15 +12,15 @@
     align-items: center;
     justify-content: center;  
 
-    .wrapperAlert{
-        width: 70%;
-        height: 35%;
+    .wrapperAlertDel{
+        width: 80%;
+        height: 55%;
         background-color: white;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;  
-        position:relative;       
+        justify-content: space-between;  
+             
 
         @media(max-width: 767px){
             height: 30%;
@@ -28,15 +28,16 @@
 
         h3{
             font-size: 2em;
-            text-align:center;            
+            text-align:center; 
+            margin-top: 2rem;           
         }
 
-        .controls{
-            position: absolute;            
-            bottom: 1px;
+        .controlsDelete{            
+            width: 100%;
             margin: 0 10px;
             display: flex;                        
-            justify-content: space-evenly;             
+            justify-content: space-evenly;   
+            margin-bottom: 1rem;;          
         }
     }
 }
