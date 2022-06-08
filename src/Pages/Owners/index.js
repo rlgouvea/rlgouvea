@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useState } from "react"
 import AlertDelete from "../../Assets/Components/AlertDelete"
+import AlertPopup from "../../Assets/Components/AlertPopup"
 import FormEdit from "../../Assets/Components/FormEdit"
 import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
 import { changeOwner, deleteProp, fetchProprietarios } from "../../Services/routes"
@@ -8,6 +9,7 @@ import {addProp} from "../../Services/routes"
 import "./ownerStyle.scss"
 import { MdOutlineDeleteForever } from "react-icons/md"
 import { FaEdit } from "react-icons/fa"
+import Table from "../../Assets/Components/Table"
 
 
 const Owners = () => {
@@ -15,6 +17,7 @@ const Owners = () => {
     const [listOwners, setListOwners] = useState(false)
     const [ownerControl, setControlOwner] = useState()
     const [alertEdit, setAlertEdit] = useState(false)
+    const [alert, setAlert] = useState(false)
     const [ownerEdit, setOwnerEdit] = useState()    
     const [alertDel, setAlertDel] = useState(false)
     const [title, setTitle] = useState()
@@ -70,18 +73,12 @@ const Owners = () => {
         e.preventDefault()
         const response = await addProp(form)        
         if(response.status === 200){
-            alert("Cadastrado com sucesso!")
+            setTitle("Cadastrado com sucesso!")
+            setAlert(true)
             setRegisterOwners(!registerOwners)
             getOwners()
         }                
-    }
-    
-
-    const handleAlertDel = (owner) => {
-        setControlOwner(owner)
-        setTitle("Tem certeza que deseja excluir esse proprietário?")
-        setAlertDel(true)
-    }
+    }        
 
     const handleDelete = async (item) => {                
         const response = await deleteProp(item[1].id)        
@@ -91,7 +88,7 @@ const Owners = () => {
         }
     }
 
-    const handleListOwners = () => {
+    const handleListOwners = () => {        
         getOwners()
         setRegisterOwners(false)
         setListOwners(!listOwners)
@@ -115,6 +112,14 @@ const Owners = () => {
                 <ButtonControl onClick={()=>handleListRegister()}>Adicionar Proprietário</ButtonControl>
             </div>
             {
+                alert &&
+                <AlertPopup
+                view={alert}
+                setView={setAlert}
+                title={title}            
+                />  
+            }          
+            {
                 alertEdit &&
                 <FormEdit
                 view={alertEdit}
@@ -133,7 +138,7 @@ const Owners = () => {
                 item={ownerControl}
                 />
             }
-            {
+            {/* {
                 listOwners &&
                 <div className="table">
                     <ul>
@@ -173,7 +178,7 @@ const Owners = () => {
                         }
                     </ul>
                 </div>
-            }
+            } */}
             {
                 registerOwners &&
                 <ContainerForm style={{borderRadius:' 20px',   
@@ -220,7 +225,11 @@ const Owners = () => {
                         </FormGroup>
                     </form>
                 </ContainerForm>
-            }                        
+            }             
+            {
+                listOwners &&
+                <Table owners={owners} getOwners={getOwners}/>           
+            }
         </div>
     )
 }

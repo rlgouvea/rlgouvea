@@ -1,0 +1,33 @@
+ 
+
+.wrapperAlert{
+    position:absolute;
+    z-index: 1000;
+    top: -9rem;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;    
+    //background-color: rgba(0, 0, 0, 0.363);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;   
+    box-shadow: 0 0 20px black;
+             
+
+    @media(max-width: 767px){
+        height: 30%;
+    }
+
+    h3{
+        font-size: 2em;
+        text-align:center;            
+    }
+
+    button{
+        margin: 20px auto 10px;
+    }
+}
