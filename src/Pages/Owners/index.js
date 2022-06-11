@@ -22,6 +22,7 @@ const Owners = () => {
     const [alertDel, setAlertDel] = useState(false)
     const [title, setTitle] = useState()
     const [registerOwners, setRegisterOwners] = useState(false)
+    let newRow = []
 
     const [form,setForm] = useState({
         name:{
@@ -32,11 +33,123 @@ const Owners = () => {
             value:"",
             error: false
         },
+        adress:{
+            value:"",
+            error: false
+        },
+        mobile:{
+            value:"",
+            error: false
+        },
+        district:{
+            value:"",
+            error: false
+        },
+        city:{
+            value:"",
+            error: false
+        },
+        zip_code:{
+            value:"",
+            error: false
+        },
+        maritalStatus:{
+            value:"",
+            error: false
+        },
+        profession:{
+            value:"",
+            error: false
+        },
+        birth:{
+            value:"",
+            error: false
+        },
         email:{
             value:"",
             error: false
         },
         cpf:{
+            value:"",
+            error: false
+        },
+        rg:{
+            value:"",
+            error: false
+        },
+        nacionality:{
+            value:"",
+            error: false
+        },
+        sonName:{
+            value:"",
+            error: false
+        },
+        sonPhone:{
+            value:"",
+            error: false
+        },
+        sonAdress:{
+            value:"",
+            error: false
+        },
+        sonMobile:{
+            value:"",
+            error: false
+        },
+        sonDistrict:{
+            value:"",
+            error: false
+        },
+        sonCity:{
+            value:"",
+            error: false
+        },
+        sonZip_code:{
+            value:"",
+            error: false
+        },
+        sonMaritalStatus:{
+            value:"",
+            error: false
+        },
+        sonProfession:{
+            value:"",
+            error: false
+        },
+        sonBirth:{
+            value:"",
+            error: false
+        },
+        sonEmail:{
+            value:"",
+            error: false
+        },
+        sonCpf:{
+            value:"",
+            error: false
+        },
+        sonRg:{
+            value:"",
+            error: false
+        },
+        sonNacionality:{
+            value:"",
+            error: false
+        },
+        bank:{
+            value:"",
+            error: false
+        },
+        ag:{
+            value:"",
+            error: false
+        },
+        count:{
+            value:"",
+            error: false
+        },
+        nameCount:{
             value:"",
             error: false
         },
@@ -56,10 +169,9 @@ const Owners = () => {
     }
     
 
-    // useEffect(()=>{        
-
-    //     getOwners()
-    // },[])
+    useEffect(()=>{                
+        getOwners()
+    },[])
 
     const getOwners = async () => {
         setOwners([])
@@ -80,16 +192,20 @@ const Owners = () => {
         }                
     }        
 
-    const handleDelete = async (item) => {                
-        const response = await deleteProp(item[1].id)        
+    const handleDelete = async (id) => {                      
+        const response = await deleteProp(id)        
         if(response.status === 200){
-            setAlertDel(false)            
+            setAlertEdit(false) 
+            setTitle('Deletado com sucesso!')  
+            setAlert(true)  
+            setListOwners(false)                               
             getOwners()
-        }
+        } 
     }
 
-    const handleListOwners = () => {        
-        getOwners()
+    const handleListOwners = async () => {        
+        await getOwners()
+        
         setRegisterOwners(false)
         setListOwners(!listOwners)
     }
@@ -99,9 +215,14 @@ const Owners = () => {
         setListOwners(false)
     }
 
-    const handleEdit = (item) => {
+    const handleEdit = (item) => {        
         setOwnerEdit(item)
         setAlertEdit(true)
+    }
+
+    const handleReload = () => {
+        getOwners()
+        setAlertEdit(false)
     }
     
     return(
@@ -125,7 +246,8 @@ const Owners = () => {
                 view={alertEdit}
                 setView={setAlertEdit}
                 item={ownerEdit}
-                handle={getOwners}
+                handle={handleReload}
+                handleDelete={handleDelete}
                 />
             }
             {
@@ -137,89 +259,337 @@ const Owners = () => {
                 handle={handleDelete}
                 item={ownerControl}
                 />
-            }
-            {/* {
-                listOwners &&
-                <div className="table">
-                    <ul>
-                        {
-                            owners &&
-                            owners.map((owner, index) => (
-                                <li key={index}>
-                                    <span
-                                        style={{
-                                            width: '10%',
-                                            cursor: 'pointer',
-                                        }}
-                                        
-                                    >
-                                        <FaEdit 
-                                        size='1.5rem' 
-                                        onClick={()=>handleEdit(owner)}
-                                        />
-                                    </span>
-                                    <span
-                                        style={{
-                                            width: '10%',
-                                            cursor: 'pointer',
-                                        }}                                        
-                                    >
-                                        <MdOutlineDeleteForever 
-                                        size='1.5rem'
-                                        onClick={()=>handleAlertDel(owner)}
-                                        />
-                                    </span>
-                                    <span>{owner[0].name}</span>
-                                    <span>{owner[0].phone}</span>
-                                    <span>{owner[0].email}</span>
-                                    <span>{owner[0].cpf}</span>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </div>
-            } */}
+            }            
             {
                 registerOwners &&
                 <ContainerForm style={{borderRadius:' 20px',   
-                    boxShadow: '0 0 20px black'}}>
+                    boxShadow: '0 0 20px black', width:"90%"}}>
                     <form onSubmit={handleSubmit}>
-                        <FormGroup>
-                            <label>Nome</label>
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Nome"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Telefone</label>
-                            <input
-                                type="text"
-                                name="phone"
-                                placeholder="Telefone"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Email</label>
-                            <input
-                                type="text"
-                                name="email"
-                                placeholder="Email"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Cpf</label>
-                            <input
-                                type="text"
-                                name="cpf"
-                                placeholder="Cpf"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
+                        <h3 style={{textAlign:'center',marginTop:'1rem'}}>Locador</h3>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Nome</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Nome"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Telefone</label>
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    placeholder="Telefone"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Endereço</label>
+                                <input
+                                    type="text"
+                                    name="adress"
+                                    placeholder="Endereço"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Celular</label>
+                                <input
+                                    type="text"
+                                    name="mobile"
+                                    placeholder="Celular"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Bairro</label>
+                                <input
+                                    type="text"
+                                    name="district"
+                                    placeholder="Bairro"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Cidade</label>
+                                <input
+                                    type="text"
+                                    name="city"
+                                    placeholder="Cidade"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Cep</label>
+                                <input
+                                    type="text"
+                                    name="zip_code"
+                                    placeholder="Cep"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Estado Civil</label>
+                                <input
+                                    type="text"
+                                    name="maritalStatus"
+                                    placeholder="Estado Civil"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Profissão</label>
+                                <input
+                                    type="text"
+                                    name="profession"
+                                    placeholder="Profissão"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Nascimento</label>
+                                <input
+                                    type="text"
+                                    name="birth"
+                                    placeholder="Nascimento"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Email</label>
+                                <input
+                                    type="text"
+                                    name="email"
+                                    placeholder="Email"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Cpf</label>
+                                <input
+                                    type="text"
+                                    name="cpf"
+                                    placeholder="Cpf"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>RG</label>
+                                <input
+                                    type="text"
+                                    name="rg"
+                                    placeholder="RG"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Nacionalidade</label>
+                                <input
+                                    type="text"
+                                    name="nacionality"
+                                    placeholder="Nacionalidade"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+
+
+
+
+                        <h3 style={{textAlign:'center',marginTop:'1rem'}}>Filho</h3>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Nome</label>
+                                <input
+                                    type="text"
+                                    name="sonName"
+                                    placeholder="Nome"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Telefone</label>
+                                <input
+                                    type="text"
+                                    name="sonPhone"
+                                    placeholder="Telefone"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Endereço</label>
+                                <input
+                                    type="text"
+                                    name="sonAdress"
+                                    placeholder="Endereço"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Celular</label>
+                                <input
+                                    type="text"
+                                    name="sonMobile"
+                                    placeholder="Celular"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Bairro</label>
+                                <input
+                                    type="text"
+                                    name="sonDistrict"
+                                    placeholder="Bairro"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Cidade</label>
+                                <input
+                                    type="text"
+                                    name="sonCity"
+                                    placeholder="Cidade"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Cep</label>
+                                <input
+                                    type="text"
+                                    name="sonZip_code"
+                                    placeholder="Cep"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Estado Civil</label>
+                                <input
+                                    type="text"
+                                    name="sonMaritalStatus"
+                                    placeholder="Estado Civil"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Profissão</label>
+                                <input
+                                    type="text"
+                                    name="sonProfession"
+                                    placeholder="Profissão"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Nascimento</label>
+                                <input
+                                    type="text"
+                                    name="sonBirth"
+                                    placeholder="Nascimento"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Email</label>
+                                <input
+                                    type="text"
+                                    name="sonEmail"
+                                    placeholder="Email"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Cpf</label>
+                                <input
+                                    type="text"
+                                    name="sonCpf"
+                                    placeholder="Cpf"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>RG</label>
+                                <input
+                                    type="text"
+                                    name="sonRg"
+                                    placeholder="RG"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Nacionalidade</label>
+                                <input
+                                    type="text"
+                                    name="sonNacionality"
+                                    placeholder="Nacionalidade"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        
+                        <h3 style={{textAlign:'center',marginTop:'1rem'}}>Dados Bancários</h3>
+                        <div className="formFlex">
+                            <FormGroup>
+                                <label>Banco</label>
+                                <input
+                                    type="text"
+                                    name="bank"
+                                    placeholder="Banco"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Ag</label>
+                                <input
+                                    type="text"
+                                    name="ag"
+                                    placeholder="Ag"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label>Conta</label>
+                                <input
+                                    type="text"
+                                    name="count"
+                                    placeholder="Conta"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div>
+                            <FormGroup>
+                                <label>Nome</label>
+                                <input
+                                    type="text"
+                                    name="nameCount"
+                                    placeholder="Nome"
+                                    onChange={handleChange}
+                                />
+                            </FormGroup>                            
+                        </div>
+                        
                         <FormGroup>
                             <ButtonControl type="submit" style={{margin: '10px auto 0'}}>Cadastrar</ButtonControl>
                         </FormGroup>
@@ -228,7 +598,11 @@ const Owners = () => {
             }             
             {
                 listOwners &&
-                <Table owners={owners} getOwners={getOwners}/>           
+                <Table 
+                owners={owners} 
+                getOwners={getOwners}
+                handleEdit={handleEdit}                
+                />           
             }
         </div>
     )

@@ -18,7 +18,7 @@ export const FormGroup = styled.div`
     display:flex;    
     justify-content:center;
     flex-direction: column;
-    margin: 15px auto;
+    margin: 1rem;
     width:100%;
     
 
