@@ -21,9 +21,37 @@ export const addProp = async (form) => {
   const response = await db.collection("proprietarios").doc().set(
     {
       name: form.name.value,
-      phone: form.phone.value,
+      phone: form.phone.value,                           
+      adress:form.adress.value,
+      mobile:form.mobile.value,
+      district:form.district.value,
+      city:form.city.value,
+      zip_code:form.zip_code.value,
+      maritalStatus:form.maritalStatus.value,
+      profession:form.profession.value,
+      birth:form.birth.value,
       email: form.email.value,
-      cpf: form.cpf.value,        
+      cpf: form.cpf.value,  
+      rg:form.rg.value,
+      nacionality:form.nacionality.value,
+      sonName:form.sonName.value,
+      sonPhone:form.sonPhone.value,
+      sonAdress:form.sonAdress.value,
+      sonMobile:form.sonMobile.value,
+      sonDistrict:form.sonDistrict.value,
+      sonCity:form.sonCity.value,
+      sonZip_code:form.sonZip_code.value,
+      sonMaritalStatus:form.sonMaritalStatus.value,
+      sonProfession:form.sonProfession.value,
+      sonBirth:form.sonBirth.value,
+      sonEmail:form.sonEmail.value,
+      sonCpf:form.sonCpf.value,
+      sonRg:form.sonRg.value,
+      sonNacionality:form.sonNacionality.value,
+      bank:form.bank.value,
+      ag:form.ag.value,
+      count:form.count.value,
+      nameCount:form.nameCount.value,
     }
   )   
   .then(() => {    
@@ -73,13 +101,42 @@ export const deleteProp = async (id) => {
 }
 
 /******Função que edição dos proprietarios******/
-export const changeOwner = async (item) => {                      
+export const changeOwner = async (item) => {   
+                   
   const response = await db.collection(`proprietarios`).doc(item.id).update(      
     {
       name: item.name,
-      phone: item.phone,
+      phone: item.phone,                           
+      adress:item.adress,
+      mobile:item.mobile,
+      district:item.district,
+      city:item.city,
+      zip_code:item.zip_code,
+      maritalStatus:item.maritalStatus,
+      profession:item.profession,
+      birth:item.birth,
       email: item.email,
-      cpf: item.cpf
+      cpf: item.cpf,  
+      rg:item.rg,
+      nacionality:item.nacionality,
+      sonName:item.sonName,
+      sonPhone:item.sonPhone,
+      sonAdress:item.sonAdress,
+      sonMobile:item.sonMobile,
+      sonDistrict:item.sonDistrict,
+      sonCity:item.sonCity,
+      sonZip_code:item.sonZip_code,
+      sonMaritalStatus:item.sonMaritalStatus,
+      sonProfession:item.sonProfession,
+      sonBirth:item.sonBirth,
+      sonEmail:item.sonEmail,
+      sonCpf:item.sonCpf,
+      sonRg:item.sonRg,
+      sonNacionality:item.sonNacionality,
+      bank:item.bank,
+      ag:item.ag,
+      count:item.count,
+      nameCount:item.nameCount,
     }
   )
   .then(() => {    
