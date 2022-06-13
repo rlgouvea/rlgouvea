@@ -4,6 +4,7 @@ import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components
 import { fetchInquilinos } from "../../Services/routes"
 import { addRenter } from "../../Services/routes"
 import "./renterStyle.scss"
+import ApoioEvent from "../../Assets/Components/Table/apoio_event"
 
 const Renters = () => {
     const [renters, setRenters] = useState([])
@@ -65,80 +66,88 @@ const Renters = () => {
         
         
     }
+
+    // edit datagrid when click on line
+    const handleClick = (e) => {
+        const id = e.target.id
+        setListRenters(!listRenters)
+        setRenterId(id)
+    }
     
     return(
-        <div className="containerRenter">
-            <h1>Inquilinos</h1> 
-            <div className="menuHead">
-                <ButtonControl onClick={()=>setListRenters(!listRenters)}>Listar Inquilinos</ButtonControl>
-                <ButtonControl onClick={()=>setRegisterRenters(!registerRenters)}>Adicionar Inquilino</ButtonControl>
-            </div>
-            {
-                listRenters &&
-                <div className="table">
-                    <ul>
-                        {
-                            renters &&
-                            renters.map((owner, index) => (
-                                <li key={index}>
-                                    <span>{owner.name}</span>
-                                    <span>{owner.phone}</span>
-                                    <span>{owner.email}</span>
-                                    <span>{owner.cpf}</span>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </div>
-            }
-            {
-                registerRenters &&
-                <ContainerForm>
-                    <form onSubmit={handleSubmit}>
-                        <FormGroup>
-                            <label>Nome</label>
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Nome"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Telefone</label>
-                            <input
-                                type="text"
-                                name="phone"
-                                placeholder="Telefone"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Email</label>
-                            <input
-                                type="text"
-                                name="email"
-                                placeholder="Email"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Cpf</label>
-                            <input
-                                type="text"
-                                name="cpf"
-                                placeholder="Cpf"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <ButtonControl type="submit" style={{margin: '10px auto 0'}}>Cadastrar</ButtonControl>
-                        </FormGroup>
-                    </form>
-                </ContainerForm>
-            }
+        <ApoioEvent />
+        // <div className="containerRenter">
+        //     <h1>Inquilinos</h1> 
+        //     <div className="menuHead">
+        //         <ButtonControl onClick={()=>setListRenters(!listRenters)}>Listar Inquilinos</ButtonControl>
+        //         <ButtonControl onClick={()=>setRegisterRenters(!registerRenters)}>Adicionar Inquilino</ButtonControl>
+        //     </div>
+        //     {
+        //         listRenters &&
+        //         <div className="table">
+        //             <ul>
+        //                 {
+        //                     renters &&
+        //                     renters.map((owner, index) => (
+        //                         <li key={index}>
+        //                             <span>{owner.name}</span>
+        //                             <span>{owner.phone}</span>
+        //                             <span>{owner.email}</span>
+        //                             <span>{owner.cpf}</span>
+        //                         </li>
+        //                     ))
+        //                 }
+        //             </ul>
+        //         </div>
+        //     }
+        //     {
+        //         registerRenters &&
+        //         <ContainerForm>
+        //             <form onSubmit={handleSubmit}>
+        //                 <FormGroup>
+        //                     <label>Nome</label>
+        //                     <input
+        //                         type="text"
+        //                         name="name"
+        //                         placeholder="Nome"
+        //                         onChange={handleChange}
+        //                     />
+        //                 </FormGroup>
+        //                 <FormGroup>
+        //                     <label>Telefone</label>
+        //                     <input
+        //                         type="text"
+        //                         name="phone"
+        //                         placeholder="Telefone"
+        //                         onChange={handleChange}
+        //                     />
+        //                 </FormGroup>
+        //                 <FormGroup>
+        //                     <label>Email</label>
+        //                     <input
+        //                         type="text"
+        //                         name="email"
+        //                         placeholder="Email"
+        //                         onChange={handleChange}
+        //                     />
+        //                 </FormGroup>
+        //                 <FormGroup>
+        //                     <label>Cpf</label>
+        //                     <input
+        //                         type="text"
+        //                         name="cpf"
+        //                         placeholder="Cpf"
+        //                         onChange={handleChange}
+        //                     />
+        //                 </FormGroup>
+        //                 <FormGroup>
+        //                     <ButtonControl type="submit" style={{margin: '10px auto 0'}}>Cadastrar</ButtonControl>
+        //                 </FormGroup>
+        //             </form>
+        //         </ContainerForm>
+        //     }
             
-        </div>
+        // </div>
     )
 }
 
