@@ -241,7 +241,7 @@ const Properties = () => {
             item={propertieDelete}
             />
         }
-        <h1>Proprietarios</h1> 
+        <h1>Propriedades</h1> 
         <div className="menuHead">
             <ButtonControl onClick={()=>handleListProperties()}>Listar Propriedades</ButtonControl>
             <ButtonControl onClick={()=>handleListRegister()}>Adicionar Propriedade</ButtonControl>
