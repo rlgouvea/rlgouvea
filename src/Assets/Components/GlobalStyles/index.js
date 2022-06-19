@@ -22,10 +22,11 @@ export const FormGroup = styled.div`
     width:100%;
     
 
-    input{
+    input, select{
         border:none;
         border-bottom: 1px solid rgb(163, 160, 160);
         height: 2rem;
+        padding: 5px;
         width: 100%;
 
         &:focus{
