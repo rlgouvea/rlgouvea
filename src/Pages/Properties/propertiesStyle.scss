@@ -1,0 +1,36 @@
+.containerProperties{
+    width: 100%;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .menuHead{
+        width: 100%;
+        margin: 2rem 0;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        button{
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            transition: all .5s ;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover{
+                font-weight: bold;
+                border-radius: 0;
+            }
+        }
+    }
+    
+    .formFlex{
+        display:flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+} 

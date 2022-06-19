@@ -10,7 +10,7 @@ const Header = () => {
                 <li onClick={() => navigate('/')}>Home</li>
                 <li onClick={() => navigate('/renters')}>Inquilinos</li>
                 <li onClick={() => navigate('/owners')}>Proprietários</li>
-                <li onClick={() => navigate()}>Imóveis</li>
+                <li onClick={() => navigate('/properties')}>Imóveis</li>
             </ul>
         </div>
     )

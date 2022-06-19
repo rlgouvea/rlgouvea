@@ -178,7 +178,7 @@ const Owners = () => {
         const response = await fetchProprietarios()        
         response.docs.forEach(item =>{                               
             setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
-        })         
+        })                 
     }
     
     const handleSubmit = async (e) =>{
