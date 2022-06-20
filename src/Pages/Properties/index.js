@@ -241,10 +241,10 @@ const Properties = () => {
             item={propertieDelete}
             />
         }
-        <h1>Propriedades</h1> 
+        <h1>Imóveis</h1> 
         <div className="menuHead">
-            <ButtonControl onClick={()=>handleListProperties()}>Listar Propriedades</ButtonControl>
-            <ButtonControl onClick={()=>handleListRegister()}>Adicionar Propriedade</ButtonControl>
+            <ButtonControl onClick={()=>handleListProperties()}>Listar Imóveis</ButtonControl>
+            <ButtonControl onClick={()=>handleListRegister()}>Adicionar Imóvel</ButtonControl>
         </div>    
         {
             loading &&
