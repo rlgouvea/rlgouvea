@@ -9,12 +9,12 @@ export const fetchProprietarios = async () => {
 
 /******Função que faz o Get dos inquilinos******/
 export const fetchInquilinos = async () => {       
-  const response = db.collection('inquilinos')
-  const data = await response.get()
-  return data              
+  const data = db.collection('inquilinos')
+  const response = await data.get()
+  return response              
 }
 
-/******Função que faz o Get das propriedades******/
+/******Função que faz o Get dos imóveis******/
 export const fetchProperties = async () => {       
   const data = db.collection('imoveis')
   const response = await data.get()
@@ -81,8 +81,9 @@ export const addRenter = async (form) => {
   const response = await db.collection("inquilinos").doc().set(
 
     {
-      name: form.name.value,
+      name: form.rent_name.value,
       phone: form.phone.value,
+      phone2: form.phone2.value,
       email: form.email.value,
       cpf: form.cpf.value,        
     }

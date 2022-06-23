@@ -1,13 +1,9 @@
 import { useEffect } from "react"
 import { useState } from "react"
-import AlertDelete from "../../Assets/Components/AlertDelete"
-import AlertPopup from "../../Assets/Components/AlertPopup"
-import FormEdit from "../../Assets/Components/FormEdit"
 import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
 import { fetchInquilinos } from "../../Services/routes"
 import { addRenter } from "../../Services/routes"
 import "./renterStyle.scss"
-import TableRenters from "../../Assets/Components/Table/tableRenters"
 
 const Renters = () => {
     const [renters, setRenters] = useState([])
@@ -16,15 +12,11 @@ const Renters = () => {
     const [registerRenters, setRegisterRenters] = useState(false)
 
     const [form,setForm] = useState({
-        rent_name:{
+        name:{
             value:"",
             error: false
         },
         phone:{
-            value:"",
-            error: false
-        },
-        phone2:{
             value:"",
             error: false
         },
@@ -51,6 +43,7 @@ const Renters = () => {
     }
 
     useEffect(()=>{        
+
         getRenters()
     },[])
 
@@ -58,30 +51,20 @@ const Renters = () => {
         setRenters([])
         const response = await fetchInquilinos()
         response.docs.forEach(item =>{                               
-            setRenters(prevState => [...prevState, [item.data(), {id:item.id}]])      
-            // setRenterId(prevState => [...prevState, item.id])
+            setRenters(prevState => [...prevState, item.data()])      
+            setRenterId(prevState => [...prevState, item.id])
         })   
     }
 
-    /* handleSubmit
-        Adicionar setTitle
-        Adicionar setAlert
-    */
     const handleSubmit = async (e) =>{
         e.preventDefault()
         addRenter(form)                
         alert("Cadastrado com sucesso!")
         setRegisterRenters(!registerRenters)
-        getRenters()        
+        getRenters()
+        
+        
     }
-
-    /* adicionar
-        handleDelete
-        handleListRenters
-        handleListRegister
-        handleEdit
-        handleReload
-    */
     
     return(
         <div className="containerRenter">
@@ -92,29 +75,21 @@ const Renters = () => {
             </div>
             {
                 listRenters &&
-                    <TableRenters 
-                        renters={renters}
-                        getRenters={getRenters}
-                        // handleEdit={handleEdit}
-                    />
-                // <div>
-                //     <div className="table">
-                //         <ul>
-                //             {
-                //                 renters &&
-                //                 renters.map((renter, index) => (
-                //                     <li key={index}>
-                //                         <span>{renter.name}</span>
-                //                         <span>{renter.phone}</span>
-                //                         <span>{renter.phone2}</span>
-                //                         <span>{renter.email}</span>
-                //                         <span>{renter.cpf}</span>
-                //                     </li>
-                //                 ))
-                //             }
-                //         </ul>
-                //     </div>
-                // </div>
+                <div className="table">
+                    <ul>
+                        {
+                            renters &&
+                            renters.map((owner, index) => (
+                                <li key={index}>
+                                    <span>{owner.name}</span>
+                                    <span>{owner.phone}</span>
+                                    <span>{owner.email}</span>
+                                    <span>{owner.cpf}</span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
             }
             {
                 registerRenters &&
@@ -124,7 +99,7 @@ const Renters = () => {
                             <label>Nome</label>
                             <input
                                 type="text"
-                                name="rent_name"
+                                name="name"
                                 placeholder="Nome"
                                 onChange={handleChange}
                             />
@@ -134,15 +109,6 @@ const Renters = () => {
                             <input
                                 type="text"
                                 name="phone"
-                                placeholder="Telefone"
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Telefone 2</label>
-                            <input
-                                type="text"
-                                name="phone2"
                                 placeholder="Telefone"
                                 onChange={handleChange}
                             />
