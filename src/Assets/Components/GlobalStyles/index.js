@@ -12,6 +12,11 @@ export const ContainerForm = styled.div`
     form{
         width:80%;
     }
+
+    @media(max-width:767px){
+        width:90%;
+        flex-wrap: wrap;
+    }
 `
 
 export const FormGroup = styled.div`
@@ -20,7 +25,7 @@ export const FormGroup = styled.div`
     flex-direction: column;
     margin: 1rem;
     width:100%;
-    
+    flex-wrap: wrap;
 
     input, select{
         border:none;
@@ -45,6 +50,7 @@ export const ButtonControl = styled.button`
     color: white;
     transition: all .5s ;
     border-radius: 10px;
+    margin: 5px;
     cursor: pointer;
 
     &:hover{

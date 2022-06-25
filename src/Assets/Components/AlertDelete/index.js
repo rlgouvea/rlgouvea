@@ -11,7 +11,7 @@ const AlertDelete = ({title, handle, view, setView, item}) => {
     return(
         <div className="containerAlert">
             <div className="wrapperAlertDel">
-                {
+                {/* {
                     alert &&
                     <Alert
                         title={titleAlert}
@@ -19,13 +19,13 @@ const AlertDelete = ({title, handle, view, setView, item}) => {
                         view={view}
                         setView={setView}
                     />
-                }
+                } */}
                 <h3>{title}</h3>
                 <div className="controlsDelete">
                     <ButtonControl 
-                    onClick={()=>handle(item.id)}                    
+                    onClick={()=>handle()}                    
                     >
-                        Ok
+                        Sim
                     </ButtonControl>
                     <ButtonControl 
                     onClick={()=>setView(!view)}                                        
