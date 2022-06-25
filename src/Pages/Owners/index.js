@@ -10,6 +10,7 @@ import "./ownerStyle.scss"
 import { MdOutlineDeleteForever } from "react-icons/md"
 import { FaEdit } from "react-icons/fa"
 import Table from "../../Assets/Components/Table"
+import Loader from "../../Assets/Components/Loader"
 
 
 const Owners = () => {
@@ -22,6 +23,7 @@ const Owners = () => {
     const [alertDel, setAlertDel] = useState(false)
     const [title, setTitle] = useState()
     const [registerOwners, setRegisterOwners] = useState(false)
+    const [loading, setLoading] = useState(false)
     let newRow = []
 
     const [form,setForm] = useState({
@@ -169,19 +171,22 @@ const Owners = () => {
     }
     
 
-    useEffect(()=>{                
+    useEffect(()=>{                       
         getOwners()
     },[])
 
     const getOwners = async () => {
+        setLoading(true) 
         setOwners([])
         const response = await fetchProprietarios()        
         response.docs.forEach(item =>{                               
             setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
-        })                 
+        })  
+        setLoading(false)                
     }
     
     const handleSubmit = async (e) =>{
+        setLoading(true) 
         e.preventDefault()
         const response = await addProp(form)        
         if(response.status === 200){
@@ -189,35 +194,63 @@ const Owners = () => {
             setAlert(true)
             setRegisterOwners(!registerOwners)
             getOwners()
-        }                
+        }           
+        setLoading(false)      
     }        
 
-    const handleDelete = async (id) => {                      
-        const response = await deleteProp(id)        
+    const handleDelete = (item) => {    
+        setAlertDel(true)    
+        setTitle("Tem certeza que deseja excluir esse proprietário?") 
+        setControlOwner(item.id)             
+        
+    }
+
+    const deleteOwner = async () => {
+        setLoading(true) 
+        const response = await deleteProp(ownerControl)        
         if(response.status === 200){
+            setAlertDel(false)
+            getOwners()
             setAlertEdit(false) 
             setTitle('Deletado com sucesso!')  
             setAlert(true)  
             setListOwners(false)                               
-            getOwners()
+            
         } 
+        setLoading(false) 
     }
 
-    const handleListOwners = async () => {        
-        await getOwners()
-        
+    const handleListOwners = async () => {  
+        setLoading(true)       
+        await getOwners()        
         setRegisterOwners(false)
         setListOwners(!listOwners)
+        setLoading(false) 
     }
 
     const handleListRegister = () => {
+        setLoading(true) 
         setRegisterOwners(!registerOwners)
         setListOwners(false)
+        setLoading(false) 
     }
 
-    const handleEdit = (item) => {        
+    const handleEdit = async (item) => {        
         setOwnerEdit(item)
-        setAlertEdit(true)
+        setAlertEdit(true)        
+    }
+
+    const handleEditOwner = async (data) => {
+        setLoading(true) 
+        const response = await changeOwner(data)        
+        if(response.status === 200){
+            getOwners()
+            setAlertEdit(false) 
+            setTitle("Atualizado com sucesso!")  
+            setAlert(true) 
+                                
+        } 
+        setLoading(false) 
     }
 
     const handleReload = () => {
@@ -232,6 +265,10 @@ const Owners = () => {
                 <ButtonControl onClick={()=>handleListOwners()}>Listar Proprietários</ButtonControl>
                 <ButtonControl onClick={()=>handleListRegister()}>Adicionar Proprietário</ButtonControl>
             </div>
+            {
+                loading &&
+                <Loader/>
+            }
             {
                 alert &&
                 <AlertPopup
@@ -248,6 +285,7 @@ const Owners = () => {
                 item={ownerEdit}
                 handle={handleReload}
                 handleDelete={handleDelete}
+                handleEditOwner={handleEditOwner}
                 />
             }
             {
@@ -256,8 +294,8 @@ const Owners = () => {
                 title={title}
                 view={alertDel}
                 setView={setAlertDel}
-                handle={handleDelete}
-                item={ownerControl}
+                handle={deleteOwner}
+                //item={ownerControl}
                 />
             }            
             {

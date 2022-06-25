@@ -25,9 +25,10 @@
         box-shadow: 0 0 20px black;
         margin:1rem auto;
         padding: 10px;
+        overflow-x: auto;
 
         @media(max-width: 767px){
-            height: 30%;
+            height: 90%;
         }
 
         h3{
@@ -59,4 +60,8 @@
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
+
+    @media(max-width: 767px){
+        flex-wrap: wrap;
+    }
 }

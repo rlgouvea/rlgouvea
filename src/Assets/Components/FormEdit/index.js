@@ -6,7 +6,7 @@ import Alert from "../Alert"
 import "./styleFormEdit.scss"
 
 
-const FormEdit = ({view, setView, item, handle, handleDelete}) => {    
+const FormEdit = ({view, setView, item, handle, handleDelete, handleEditOwner}) => {    
     const [ownerControl, setOwnerControl] = useState()
     const [alertDel, setAlertDel] = useState(false)
     const [alert, setAlert] = useState(false)
@@ -323,24 +323,21 @@ const FormEdit = ({view, setView, item, handle, handleDelete}) => {
             ag:form.ag.value,
             count:form.count.value,
             nameCount:form.nameCount.value,
-        }
-        const response = await changeOwner(data)        
-        if(response.status === 200){
-            setTitle("Atualizado com sucesso!")  
-            setAlert(true)                      
-        } 
+        }        
+        handleEditOwner(data)
     }
 
     const handleAlertDel = () => {
-        setOwnerControl(item)
-        setTitle("Tem certeza que deseja excluir esse proprietário?")
-        setAlertDel(true)
+        handleDelete(item)
+        // setOwnerControl(item)
+        // setTitle("Tem certeza que deseja excluir esse proprietário?")
+        // setAlertDel(true)
     }
 
     
     return(
         <div className="containerEdit">
-            <div className="wrapperEdit"> 
+            <div className="wrapperEdit" style={{justifyContent:"flex-start"}}> 
                 {
                     alertDel &&
                     <AlertDelete
@@ -350,12 +347,9 @@ const FormEdit = ({view, setView, item, handle, handleDelete}) => {
                     handle={handleDelete}
                     item={ownerControl}
                     />
-                } 
-                {
-                    alert && 
-                    <Alert title={title} view={view} setView={setView} handle={handle} />
-                }
+                }                 
                 <form>
+                    <h3 style={{textAlign:'center',marginTop:'1rem'}}>Proprietário</h3>
                     <div className="formFlex">
                         <FormGroup>
                             <label>Nome</label>
@@ -458,7 +452,7 @@ const FormEdit = ({view, setView, item, handle, handleDelete}) => {
                         <FormGroup>
                             <label>Nascimento</label>
                             <input
-                                type="text"
+                                type="date"
                                 name="birth"
                                 placeholder="Nascimento"
                                 value={form.birth.value}
@@ -612,7 +606,7 @@ const FormEdit = ({view, setView, item, handle, handleDelete}) => {
                         <FormGroup>
                             <label>Nascimento</label>
                             <input
-                                type="text"
+                                type="date"
                                 name="sonBirth"
                                 placeholder="Nascimento"
                                 value={form.sonBirth.value}
