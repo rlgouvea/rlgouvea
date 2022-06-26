@@ -20,19 +20,27 @@ const Renters = () => {
             value:"",
             error: false
         },
-        phone:{
+        rent_phone:{
             value:"",
             error: false
         },
-        phone2:{
+        rent_phone2:{
             value:"",
             error: false
         },
-        email:{
+        rent_phone3:{
             value:"",
             error: false
         },
-        cpf:{
+        rent_email:{
+            value:"",
+            error: false
+        },
+        rent_cpf:{
+            value:"",
+            error: false
+        },
+        rent_rg:{
             value:"",
             error: false
         },

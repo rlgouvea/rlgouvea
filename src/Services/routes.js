@@ -82,10 +82,16 @@ export const addRenter = async (form) => {
 
     {
       name: form.rent_name.value,
-      phone: form.phone.value,
-      phone2: form.phone2.value,
-      email: form.email.value,
-      cpf: form.cpf.value,        
+      phone: form.rent_phone.value,
+      phone2: form.rent_phone2.value,
+      phone3: form.rent_phone3.value,
+      maritalStatus: form.rent_maritalStatus,
+      profession: form.rent_profession,
+      nationality: form.rent_nationality,
+      birth: form.rent_birth,
+      email: form.rent_email.value,
+      cpf: form.rent_cpf.value,        
+      rg: form.rent_rg.value,        
     }
 
   )  
@@ -122,6 +128,22 @@ export const addPropertie = async (form) => {
     return response
   
 } 
+
+/******Função que faz o delete do inquilino******/
+export const deleteRent = async (id) => {
+  const response = await db.collection("inquilinos").doc(id).delete()
+  .then(() => {    
+    return(
+      {status: 200}
+    )
+  })
+  .catch((err) => {    
+    return(
+      {status: 400}
+    )
+  })
+  return response
+}
 
 /******Função que faz o delete dos proprietários******/
 export const deleteProp = async (id) => {
