@@ -21,6 +21,38 @@ export const fetchProperties = async () => {
   return response              
 }
 
+/******Função que adiciona inquilino******/
+export const addRenter = async (form) => {
+    
+  const response = await db.collection("inquilinos").add(
+    {
+      name: form.name.value,
+      phone: form.phone.value,
+      phone2: form.phone2.value,
+      phone3: form.phone3.value,
+      maritalStatus: form.maritalStatus.value,
+      profession: form.profession.value,
+      nationality: form.nationality.value,
+      birth: form.birth.value,
+      email: form.email.value,
+      cpf: form.cpf.value,        
+      rg: form.rg.value,    
+    }
+  )   
+  .then((doc) => {    
+  return(
+    {data:doc, status: 200 }
+  )
+  })
+  .catch((err) => {    
+    return(
+      { status: 400 }
+    )
+  })   
+  
+  return response
+} 
+
 /******Função que adiciona proprietário******/
 export const addProp = async (form) => {
     
@@ -75,29 +107,6 @@ export const addProp = async (form) => {
   return response
 } 
 
-/******Função que adiciona inquilino******/
-export const addRenter = async (form) => {
-    
-  const response = await db.collection("inquilinos").doc().set(
-
-    {
-      name: form.rent_name.value,
-      phone: form.rent_phone.value,
-      phone2: form.rent_phone2.value,
-      phone3: form.rent_phone3.value,
-      maritalStatus: form.rent_maritalStatus,
-      profession: form.rent_profession,
-      nationality: form.rent_nationality,
-      birth: form.rent_birth,
-      email: form.rent_email.value,
-      cpf: form.rent_cpf.value,        
-      rg: form.rent_rg.value,        
-    }
-
-  )  
-  
-} 
-
 /******Função que adiciona imovel******/
 export const addPropertie = async (form) => {
     
@@ -130,7 +139,7 @@ export const addPropertie = async (form) => {
 } 
 
 /******Função que faz o delete do inquilino******/
-export const deleteRent = async (id) => {
+export const deleteRenter = async (id) => {
   const response = await db.collection("inquilinos").doc(id).delete()
   .then(() => {    
     return(
@@ -177,6 +186,36 @@ export const deletePropertie = async (id) => {
   return response
 }
 
+/******Função que edição do inquilino******/
+export const changeRenter = async (item) => {   
+                   
+  const response = await db.collection(`inquilinos`).doc(item.id).update(      
+    {
+      name: item.name,
+      phone: item.phone,
+      phone2: item.phone2,
+      phone3: item.phone3,
+      maritalStatus: item.maritalStatus,
+      profession: item.profession,
+      nationality: item.nationality,
+      birth: item.birth,
+      email: item.email,
+      cpf: item.cpf,        
+      rg: item.rg, 
+    }
+  )
+  .then(() => {    
+    return(
+      {status: 200}
+    )
+  })
+  .catch((err) => {    
+    return(
+      {status: 400}
+    )
+  })
+  return response
+} 
 /******Função que edição dos proprietarios******/
 export const changeOwner = async (item) => {   
                    

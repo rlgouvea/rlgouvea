@@ -77,25 +77,17 @@ export default function DataTable({renters, handleEdit}) {
    
   return (
     <div style={{ height: 400, width: '100%' }}>
-      {/* {heaveRow &&       */}
+      {heaveRow &&      
         <DataGrid
           rows={newRow}
-          
-          // rows={
-          //   renters.map(renter => {
-          //       return {
-          //           // name
-          //       }
-          //   })
-          // }
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
           //checkboxSelection
-          // GridRowParams                    
-          // onRowClick={(e)=>handleEdit(e.row)}          
+          GridRowParams                    
+          onRowClick={(e)=>handleEdit(e.row)}          
         />              
-      {/* }       */}
+      } 
     </div>
   );
 }

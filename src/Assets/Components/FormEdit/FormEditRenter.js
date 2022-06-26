@@ -1,25 +1,16 @@
-import { useEffect } from "react"
-import { useState } from "react"
-import AlertDelete from "../../Assets/Components/AlertDelete"
-import AlertPopup from "../../Assets/Components/AlertPopup"
-import FormEditRenter from "../../Assets/Components/FormEdit/FormEditRenter"
-import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
-import { changeRenter, deleteRenter, fetchInquilinos } from "../../Services/routes"
-import { addRenter } from "../../Services/routes"
-import "./renterStyle.scss"
-import TableRenters from "../../Assets/Components/Table/tableRenters"
+import { useEffect, useState } from "react"
+import { changeRenter, deleteProp } from "../../../Services/routes"
+import { ButtonControl, FormGroup } from "../GlobalStyles"
+import AlertDelete from "../AlertDelete"
+import Alert from "../Alert"
+import "./styleFormEdit.scss"
 
-const Renters = () => {
-    const [renters, setRenters] = useState([])
-    const [listRenters, setListRenters] = useState(false)
+
+const FormEdit = ({view, setView, item, handle, handleDelete}) => {    
     const [renterControl, setRenterControl] = useState()
-    const [alertEdit, setAlertEdit] = useState(false)
-    const [alert, setAlert] = useState(false)
-    const [ownerEdit, setOwnerEdit] = useState()    
     const [alertDel, setAlertDel] = useState(false)
+    const [alert, setAlert] = useState(false)
     const [title, setTitle] = useState()
-    const [registerRenters, setRegisterRenters] = useState(false)
-
     const [form,setForm] = useState({
         name:{
             value:"",
@@ -67,6 +58,55 @@ const Renters = () => {
         },
     })
 
+    useEffect (()=>{
+        setForm({
+            name:{
+                value:item.name,
+                error: false
+            },
+            phone:{
+                value:item.phone,
+                error: false
+            },
+            phone2:{
+                value:item.phone2,
+                error: false
+            },
+            phone3:{
+                value:item.phone3,
+                error: false
+            },
+            maritalStatus:{
+                value:item.maritalStatus,
+                error: false
+            },
+            profession:{
+                value:item.profession,
+                error: false
+            },
+            nationality:{
+                value:item.nationality,
+                error: false
+            },
+            birth:{
+                value:item.birth,
+                error: false
+            },
+            email:{
+                value:item.email,
+                error: false
+            },
+            cpf:{
+                value:item.cpf,
+                error: false
+            },
+            rg:{
+                value:item.rg,
+                error: false
+            },
+        })
+    },[])
+    
     const handleChange = (e) => {
         const {name, value} = e.target
 
@@ -79,127 +119,62 @@ const Renters = () => {
         })
     }
 
-    useEffect(()=>{        
-        getRenters()
-    },[])
-
-    const getRenters = async () => {
-        setRenters([])
-        const response = await fetchInquilinos()
-        response.docs.forEach(item =>{                               
-            setRenters(prevState => [...prevState, [item.data(), {id:item.id}]])      
-        })   
-    }
-
-    /* handleSubmit
-        Adicionar setTitle
-        Adicionar setAlert
-    */
-    const handleSubmit = async (e) =>{
-        e.preventDefault()
-        const response = await addRenter(form)
+    const handleSubmit = async (e) => {               
+        e.preventDefault()       
+        const data = {
+            id: item.id,
+            name: form.name.value,
+            phone: form.phone.value,
+            phone2: form.phone2.value,
+            phone3: form.phone3.value,
+            maritalStatus:form.maritalStatus.value,
+            profession:form.profession.value,
+            nationality:form.nationality.value,
+            birth:form.birth.value,
+            email: form.email.value,
+            cpf: form.cpf.value,  
+            rg:form.rg.value,
+        }
+        const response = await changeRenter(data)        
         if(response.status === 200){
-            setTitle("Cadastrado com sucesso!")
-            setAlert(true)
-            setRegisterRenters(!registerRenters)
-            getRenters() 
-        }
+            setTitle("Atualizado com sucesso!")  
+            setAlert(true)                      
+        } 
     }
 
-    /* adicionar
-        handleDelete
-        handleListRenters
-        handleListRegister
-        handleEdit
-        handleReload
-    */
-        const handleDelete = async (id) => {                      
-            const response = await deleteRenter(id)        
-            if(response.status === 200){
-                setAlertEdit(false) 
-                setTitle('Deletado com sucesso!')  
-                setAlert(true)  
-                setListRenters(false)                               
-                getRenters()
-            } 
-        }
-    
-        const handleListRenters = async () => {        
-            await getRenters()
-            
-            setRegisterRenters(false)
-            setListRenters(!listRenters)
-        }
-    
-        const handleListRegister = () => {
-            setRegisterRenters(!registerRenters)
-            setListRenters(false)
-        }
-    
-        const handleEdit = (item) => {        
-            setOwnerEdit(item)
-            setAlertEdit(true)
-        }
-    
-        const handleReload = () => {
-            getRenters()
-            setAlertEdit(false)
-        }
+    const handleAlertDel = () => {
+        setRenterControl(item)
+        setTitle("Tem certeza que deseja excluir esse proprietário?")
+        setAlertDel(true)
+    }
+
     
     return(
-        <div className="containerRenter">
-            <h1>Inquilinos</h1> 
-            <div className="menuHead">
-                <ButtonControl onClick={()=>handleListRenters()}>Listar Inquilinos</ButtonControl>
-                <ButtonControl onClick={()=>handleListRegister()}>Adicionar Inquilino</ButtonControl>
-            </div>
-            {
-                listRenters &&
-                    <TableRenters 
-                        renters={renters}
-                        getRenters={getRenters}
-                        handleEdit={handleEdit}
+        <div className="containerEdit">
+            <div className="wrapperEdit"> 
+                {
+                    alertDel &&
+                    <AlertDelete
+                    title={title}
+                    view={view}
+                    setView={setView}
+                    handle={handleDelete}
+                    item={renterControl}
                     />
-            }
-            {
-                alert &&
-                <AlertPopup
-                view={alert}
-                setView={setAlert}
-                title={title}            
-                />  
-            }          
-            {
-                alertEdit &&
-                <FormEditRenter
-                view={alertEdit}
-                setView={setAlertEdit}
-                item={ownerEdit}
-                handle={handleReload}
-                handleDelete={handleDelete}
-                />
-            }
-            {
-                alertDel &&
-                <AlertDelete
-                title={title}
-                view={alertDel}
-                setView={setAlertDel}
-                handle={handleDelete}
-                item={renterControl}
-                />
-            } 
-            {
-                registerRenters &&
-                <ContainerForm style={{borderRadius:' 20px',   
-                    boxShadow: '0 0 20px black', width:"90%"}}>
-                    <form onSubmit={handleSubmit}>
+                } 
+                {
+                    alert && 
+                    <Alert title={title} view={view} setView={setView} handle={handle} />
+                }
+                <form>
+                    <div className="formFlex">
                         <FormGroup>
                             <label>Nome</label>
                             <input
                                 type="text"
                                 name="name"
                                 placeholder="Nome"
+                                value={form.name.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
@@ -209,6 +184,7 @@ const Renters = () => {
                                 type="text"
                                 name="phone"
                                 placeholder="Telefone"
+                                value={form.phone.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
@@ -218,6 +194,7 @@ const Renters = () => {
                                 type="text"
                                 name="phone2"
                                 placeholder="Telefone"
+                                value={form.phone2.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
@@ -227,15 +204,19 @@ const Renters = () => {
                                 type="text"
                                 name="phone3"
                                 placeholder="Telefone"
+                                value={form.phone3.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
+                    </div>
+                    <div className="formFlex">
                         <FormGroup>
                             <label>Estado Civil</label>
                             <input
                                 type="text"
                                 name="maritalStatus"
                                 placeholder="Estado Civil"
+                                value={form.maritalStatus.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
@@ -245,6 +226,7 @@ const Renters = () => {
                                 type="text"
                                 name="profession"
                                 placeholder="Profissão"
+                                value={form.profession.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
@@ -254,15 +236,19 @@ const Renters = () => {
                                 type="text"
                                 name="nationality"
                                 placeholder="Nacionalidade"
+                                value={form.nationality.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
+                    </div>
+                    <div className="formFlex">
                         <FormGroup>
                             <label>Nascimento</label>
                             <input
                                 type="text"
                                 name="birth"
                                 placeholder="Nascimento"
+                                value={form.birth.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
@@ -272,15 +258,19 @@ const Renters = () => {
                                 type="text"
                                 name="email"
                                 placeholder="Email"
+                                value={form.email.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
+                    </div>
+                    <div className="formFlex">
                         <FormGroup>
-                            <label>CPF</label>
+                            <label>Cpf</label>
                             <input
                                 type="text"
                                 name="cpf"
-                                placeholder="CPF"
+                                placeholder="Cpf"
+                                value={form.cpf.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
@@ -290,18 +280,34 @@ const Renters = () => {
                                 type="text"
                                 name="rg"
                                 placeholder="RG"
+                                value={form.rg.value}
                                 onChange={handleChange}
                             />
                         </FormGroup>
-                        <FormGroup>
-                            <ButtonControl type="submit" style={{margin: '10px auto 0'}}>Cadastrar</ButtonControl>
-                        </FormGroup>
-                    </form>
-                </ContainerForm>
-            }
-            
+                    </div>
+                </form> 
+                <div className="controls">
+                    <ButtonControl                        
+                    onClick={handleSubmit}                        
+                    >
+                        Salvar
+                    </ButtonControl>
+                    <ButtonControl 
+                    onClick={()=>setView(!view)
+                    }                        
+                    >
+                        Cancelar
+                    </ButtonControl>
+                    <ButtonControl 
+                    onClick={()=>handleAlertDel()
+                    }                        
+                    >
+                        Deletar
+                    </ButtonControl>
+                </div>
+            </div>
         </div>
     )
 }
 
-export default Renters
+export default FormEdit
