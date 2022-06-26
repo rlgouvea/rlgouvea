@@ -446,7 +446,7 @@ const Owners = () => {
 
 
 
-                        <h3 style={{textAlign:'center',marginTop:'1rem'}}>Filho</h3>
+                        <h3 style={{textAlign:'center',marginTop:'1rem'}}>Representante</h3>
                         <div className="formFlex">
                             <FormGroup>
                                 <label>Nome</label>
