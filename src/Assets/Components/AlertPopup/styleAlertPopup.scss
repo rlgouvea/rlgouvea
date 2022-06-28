@@ -5,7 +5,7 @@
     z-index: 99;
     bottom: 1px;
     left: 1px;
-    width: 30%;
+    //width: 30%;
     height: 5%;
     background-color: rgb(35, 182, 16);
     color:white;
@@ -17,6 +17,7 @@
     border-radius: 5px;   
     box-shadow: 0 0 20px black;
     transition: 1s;
+    padding: 2px 5px;
     p{        
         text-align:center;            
     }  

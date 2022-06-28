@@ -4,6 +4,7 @@ import Template from "./Assets/Template";
 import Owners from "./Pages/Owners";
 import Renters from "./Pages/Renters";
 import Properties from "./Pages/Properties";
+import NewContract from "./Pages/NewContract";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/owners" element={<Owners/>} />
           <Route path="/renters" element={<Renters/>} />
           <Route path="/properties" element={<Properties/>} />
+          <Route path="/newContract" element={<NewContract/>} />
         </Routes>
       </Template>
     </BrowserRouter>

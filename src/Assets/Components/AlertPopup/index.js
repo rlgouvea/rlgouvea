@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import "./styleAlertPopup.scss"
 
 
-const AlertPopup = ({title,view, setView, handle}) => {
+const AlertPopup = ({title,view, setView, handle, status}) => {
     useEffect(()=>{
         setTimeout(()=>{
             if(handle){
@@ -12,7 +12,12 @@ const AlertPopup = ({title,view, setView, handle}) => {
         },3000)
     },[])
     return(        
-        <div className="wrapperAlertPopup">
+        <div className="wrapperAlertPopup" 
+        style={{
+            backgroundColor: status === 'success' ? 'rgb(35, 182, 16)' :
+            'red'
+        }}
+        >
             <p>{title}</p>                                                       
         </div>       
     )
