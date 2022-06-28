@@ -21,6 +21,7 @@ const Properties = () => {
     const [propertieDelete, setPropertieDelete] = useState()
     const [alertDelete, setAlertDelete] = useState(false)
     const [alertEdit, setAlertEdit] = useState(false)
+    const [statusResp, setStatusResp] = useState()
     const [form, setForm] = useState({
         codigo:{
             value: "",
@@ -162,6 +163,10 @@ const Properties = () => {
             setLoading(false)
             setAlert(true)   
             setForm(initialState)         
+        } else if(response.status === 400){
+            setTitle("Erro no sistema, tente novamente mais tarde!")
+            setLoading(false)
+            setAlert(true) 
         }
     }
 
@@ -186,11 +191,18 @@ const Properties = () => {
         setLoading(true)
         const response = await changePropertie(item)
         if(response.status === 200){
+            setStatusResp('success')
             setAlertEdit(false)
             setTitle("Alterado com sucesso!")
             setLoading(false)
             setAlert(true)                     
             setListProperties(false)              
+        } else if(response.status === 400){
+            setStatusResp('error')
+            setAlertEdit(false)
+            setTitle("Erro no sistema, tente novamente mais tarde!")
+            setLoading(false)
+            setAlert(true) 
         }
     }
 
@@ -343,7 +355,7 @@ const Properties = () => {
             }
         {
             alert &&
-            <AlertPopup title={title} view={alert} setView={setAlert} />
+            <AlertPopup status={statusResp} title={title} view={alert} setView={setAlert} />
         }
     </div>
     )

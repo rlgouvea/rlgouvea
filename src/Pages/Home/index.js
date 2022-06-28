@@ -10,7 +10,7 @@ export const Home = () => {
             eraseSpeed={'100'}
             eraseDelay={'400'}
             typingDelay={'300'}
-            text={["R.L.GOUVEA","A SUA MELHOR IMOBILIÁRIA!"]} 
+            text={["R.L.GOUVEA","ADMINISTRAÇÃO DE BENS", "COMPRA - VENDA - LOCAÇÕES"]} 
             /> 
             </h1>
         </div>
