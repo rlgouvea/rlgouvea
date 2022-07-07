@@ -1,23 +1,44 @@
 import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "pdfmake/build/vfs_fonts"
+import header from "../../Assets/img/header-contrato.jpg"
 
 const VisualizarImpressao = ({form,owner,renterSelect}) => {    
     pdfMake.vfs = pdfFonts.pdfMake.vfs;    
+
+    var imagem = {
+        images: {
+            building: 'https://img.freepik.com/fotos-gratis/3d-rendem-de-uma-mesa-de-madeira-com-uma-imagem-defocussed-de-um-barco-em-um-lago_1048-3432.jpg?w=2000'
+        }
+        // content: [
+        //     {
+        //         image: 'https://img.freepik.com/fotos-gratis/3d-rendem-de-uma-mesa-de-madeira-com-uma-imagem-defocussed-de-um-barco-em-um-lago_1048-3432.jpg?w=2000',
+        //         width: 250,
+        //         height: 250
+        //     },  
+        // ]
+    }
     
     const headers = [
-        
         {
-            text: 'CONTRATO DE INTERMEDIAÇÃO IMOBILIÁRIA PARA FINS DE LOCAÇÃO',
-            fontSize: 20,
-            bold: true,
-            margin: [50, 20, 0, 45]
+           imagem
         }
+        
+        // {
+        //     text: 'R.L. GOUVÊA Corretor de Imóveis Creci 40.710-F (Nova Pompéia Imóveis) Compra – Venda – Avaliação - Locações',
+        //     fontSize: 20,
+        //     bold: true,
+        //     margin: [50, 20, 0, 45]
+        // }
     ]    
 
-    const details = [                        
+    const details = [ 
         {
-            text: 'Por este instrumento particular, as partes qualificadas na Cláusula 1ª têm entre si justa e acertada a presente relação contratual.',
-            fontSize: 10,
+            imagem
+        },  
+        {
+            text: 'INSTRUMENTO PARTICULAR DE CONTRATO DE LOCAÇÃO DE IMÓVEL RESIDENCIAL',
+            fontSize: 15,
+            bold: true,
             margin: [10, 30, 20, 50]
         },
         {

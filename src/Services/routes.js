@@ -140,6 +140,7 @@ export const addPropertie = async (form) => {
 
 /******Função que faz o delete do inquilino******/
 export const deleteRenter = async (id) => {
+  
   const response = await db.collection("inquilinos").doc(id).delete()
   .then(() => {    
     return(

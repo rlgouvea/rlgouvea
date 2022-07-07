@@ -113,8 +113,8 @@ const Renters = () => {
         handleEdit
         handleReload
     */
-        const handleDelete = async (id) => {                      
-            const response = await deleteRenter(id)        
+        const handleDelete = async () => {                                  
+            const response = await deleteRenter(renterControl.id)        
             if(response.status === 200){
                 setAlertEdit(false) 
                 setTitle('Deletado com sucesso!')  
@@ -136,7 +136,8 @@ const Renters = () => {
             setListRenters(false)
         }
     
-        const handleEdit = (item) => {        
+        const handleEdit = (item) => {    
+            setRenterControl(item)    
             setOwnerEdit(item)
             setAlertEdit(true)
         }

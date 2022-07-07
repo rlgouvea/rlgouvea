@@ -23,7 +23,7 @@ const AlertDelete = ({title, handle, view, setView, item}) => {
                 <h3>{title}</h3>
                 <div className="controlsDelete">
                     <ButtonControl 
-                    onClick={()=>handle()}                    
+                    onClick={()=>handle(item.id)}                    
                     >
                         Sim
                     </ButtonControl>
