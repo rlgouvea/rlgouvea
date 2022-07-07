@@ -6,7 +6,8 @@ import Alert from "../Alert"
 import "./styleFormEdit.scss"
 
 
-const FormEdit = ({view, setView, item, handle, handleDelete}) => {    
+const FormEditRenter = ({view, setView, item, handle, handleDelete}) => {   
+    console.log(item) 
     const [renterControl, setRenterControl] = useState()
     const [alertDel, setAlertDel] = useState(false)
     const [alert, setAlert] = useState(false)
@@ -147,7 +148,6 @@ const FormEdit = ({view, setView, item, handle, handleDelete}) => {
         setTitle("Tem certeza que deseja excluir esse proprietário?")
         setAlertDel(true)
     }
-
     
     return(
         <div className="containerEdit">
@@ -299,7 +299,7 @@ const FormEdit = ({view, setView, item, handle, handleDelete}) => {
                         Cancelar
                     </ButtonControl>
                     <ButtonControl 
-                    onClick={()=>handleAlertDel()
+                    onClick={()=>handleDelete(item)
                     }                        
                     >
                         Deletar
@@ -310,4 +310,4 @@ const FormEdit = ({view, setView, item, handle, handleDelete}) => {
     )
 }
 
-export default FormEdit
+export default FormEditRenter
