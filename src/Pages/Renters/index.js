@@ -116,13 +116,12 @@ const Renters = () => {
             console.log(item)
             setAlertDel(true)
             setTitle("Tem certeza que deseja excluir esse inquilino?")  
-            setRenterControl(item.id)   
-          
+            setRenterControl(item)             
         }
 
-        const deleteRenter = async () => {
+        const deleteRenters = async () => {
             setLoading(true)
-            const response = await deleteRenter(renterControl)
+            const response = await deleteRenter(renterControl.id)
             if(response.status === 200){
                 setLoading(false)
                 setAlertDel(false)
@@ -210,7 +209,7 @@ const Renters = () => {
                 title={title}
                 view={alertDel}
                 setView={setAlertDel}
-                handle={deleteRenter}
+                handle={deleteRenters}
                 // item={renterControl}
                 />
             } 
