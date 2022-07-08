@@ -120,7 +120,7 @@ const Renters = () => {
           
         }
 
-        const deleteRenter = async () => {
+        const deleteRenters = async () => {
             setLoading(true)
             const response = await deleteRenter(renterControl)
             if(response.status === 200){
@@ -210,7 +210,7 @@ const Renters = () => {
                 title={title}
                 view={alertDel}
                 setView={setAlertDel}
-                handle={deleteRenter}
+                handle={deleteRenters}
                 // item={renterControl}
                 />
             } 
