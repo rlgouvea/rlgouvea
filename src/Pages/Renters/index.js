@@ -8,6 +8,7 @@ import { changeRenter, deleteRenter, fetchInquilinos } from "../../Services/rout
 import { addRenter } from "../../Services/routes"
 import "./renterStyle.scss"
 import TableRenters from "../../Assets/Components/Table/tableRenters"
+import Loader from "../../Assets/Components/Loader"
 
 const Renters = () => {
     const [renters, setRenters] = useState([])
@@ -19,6 +20,7 @@ const Renters = () => {
     const [alertDel, setAlertDel] = useState(false)
     const [title, setTitle] = useState()
     const [registerRenters, setRegisterRenters] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const [form,setForm] = useState({
         name:{
@@ -84,11 +86,13 @@ const Renters = () => {
     },[])
 
     const getRenters = async () => {
+        setLoading(true)
         setRenters([])
         const response = await fetchInquilinos()
         response.docs.forEach(item =>{                               
             setRenters(prevState => [...prevState, [item.data(), {id:item.id}]])      
         })   
+        setLoading(false)
     }
 
     /* handleSubmit
@@ -96,6 +100,7 @@ const Renters = () => {
         Adicionar setAlert
     */
     const handleSubmit = async (e) =>{
+        setLoading(true)
         e.preventDefault()
         const response = await addRenter(form)
         if(response.status === 200){
@@ -104,41 +109,63 @@ const Renters = () => {
             setRegisterRenters(!registerRenters)
             getRenters() 
         }
+        setLoading(false)
     }
+    
+        const handleDelete = (item) => {                      
+            console.log(item)
+            setAlertDel(true)
+            setTitle("Tem certeza que deseja excluir esse inquilino?")  
+            setRenterControl(item)             
+        }
 
-    /* adicionar
-        handleDelete
-        handleListRenters
-        handleListRegister
-        handleEdit
-        handleReload
-    */
-        const handleDelete = async (id) => {                      
-            const response = await deleteRenter(id)        
+        const deleteRenters = async () => {
+            setLoading(true)
+            const response = await deleteRenter(renterControl.id)
             if(response.status === 200){
-                setAlertEdit(false) 
-                setTitle('Deletado com sucesso!')  
-                setAlert(true)  
-                setListRenters(false)                               
+                setLoading(false)
+                setAlertDel(false)
                 getRenters()
-            } 
+                setAlertEdit(false)
+                setTitle("Excluído com sucesso!")
+                setAlert(true)
+                setListRenters(false)
+            
+            }
+            setLoading(false)
         }
     
-        const handleListRenters = async () => {        
-            await getRenters()
-            
+        const handleListRenters = async () => {   
+            setLoading(true)     
+            await getRenters()            
             setRegisterRenters(false)
             setListRenters(!listRenters)
+            setLoading(false)
         }
     
         const handleListRegister = () => {
+            setLoading(true)
             setRegisterRenters(!registerRenters)
             setListRenters(false)
+            setLoading(false)
         }
     
         const handleEdit = (item) => {        
             setOwnerEdit(item)
             setAlertEdit(true)
+        }
+
+        const handleEditRenter = async (data) => {
+            setLoading(true)
+            const response = await changeRenter(data)
+            if(response.status === 200){
+                getRenters()
+                setAlertEdit(false)
+                setTitle("Atualizado com sucesso!")
+                setAlert(true)
+
+            }
+            setLoading(false)
         }
     
         const handleReload = () => {
@@ -154,12 +181,8 @@ const Renters = () => {
                 <ButtonControl onClick={()=>handleListRegister()}>Adicionar Inquilino</ButtonControl>
             </div>
             {
-                listRenters &&
-                    <TableRenters 
-                        renters={renters}
-                        getRenters={getRenters}
-                        handleEdit={handleEdit}
-                    />
+                loading &&
+                <Loader />
             }
             {
                 alert &&
@@ -167,7 +190,7 @@ const Renters = () => {
                 view={alert}
                 setView={setAlert}
                 title={title}            
-                />  
+                />   
             }          
             {
                 alertEdit &&
@@ -177,6 +200,7 @@ const Renters = () => {
                 item={ownerEdit}
                 handle={handleReload}
                 handleDelete={handleDelete}
+                handleEditRenter={handleEditRenter}
                 />
             }
             {
@@ -185,8 +209,8 @@ const Renters = () => {
                 title={title}
                 view={alertDel}
                 setView={setAlertDel}
-                handle={handleDelete}
-                item={renterControl}
+                handle={deleteRenters}
+                // item={renterControl}
                 />
             } 
             {
@@ -298,6 +322,14 @@ const Renters = () => {
                         </FormGroup>
                     </form>
                 </ContainerForm>
+            }
+            {
+                listRenters &&
+                <TableRenters 
+                    renters={renters}
+                    getRenters={getRenters}
+                    handleEdit={handleEdit}
+                />
             }
             
         </div>
