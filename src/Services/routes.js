@@ -1,4 +1,5 @@
 import { db } from "../Configs/FirebaseConfig"
+import {addDoc, doc, query, getDocs, collection, setDoc} from "firebase/firestore"
 
 /******Função que faz o Get dos proprietários******/
 export const fetchProprietarios = async () => {       
@@ -18,6 +19,30 @@ export const fetchInquilinos = async () => {
 export const fetchProperties = async () => {       
   const data = db.collection('imoveis')
   const response = await data.get()
+  return response              
+}
+
+/******Função que faz o Get geral dos relatorios******/
+export const fetchRelatories = async () => {       
+  const data = db.collection('relatorios')
+  const response = await data.get()
+  return response              
+}
+
+/******Função que faz o Get especifico dos relatorios******/
+export const fetchRelatory = async (period) => {          
+  const data = db.collection(`relatorios/${period}`)
+  const response = await data.get()
+  .then((doc) => {    
+    return(
+      {status: 200, data: doc }
+    )
+    })
+    .catch((err) => {    
+      return(
+        { status: 400 }
+      )
+    })  
   return response              
 }
 
@@ -121,9 +146,54 @@ export const addPropertie = async (form) => {
       zip_code: form.zip_code.value,
       owner: form.owner.value,
       renter: form.renter.value,
-      status: form.status.value
+      status: form.status.value,
+      description: form.description.value
     }
   ).then((doc) => {    
+    return(
+      {status: 200 }
+    )
+    })
+    .catch((err) => {    
+      return(
+        { status: 400 }
+      )
+    })   
+    
+    return response
+  
+} 
+
+/******Função que cria novo documento de relatorio, se não existir ainda será criado pra depois salvar os dados completos******/
+export const createDocRelatory = async (item, data) => {  
+  //const response = await db.collection(`relatorios/${item.owner}/${item.reference}`).doc(item.date).set(data)
+  //const response = await db.collection(`relatorios`).doc(item.owner).collection(item.reference).doc(item.date).set(data)
+
+  const response = await db.collection(`relatorios`).doc(item.propertie).set({status: 'criando'})
+  
+  .then((doc) => {    
+    return(
+      {status: 200 }
+    )
+    })
+    .catch((err) => {    
+      return(
+        { status: 400 }
+      )
+    })   
+    
+    return response
+  
+} 
+
+/******Função que cria nova coleção de relatorio******/
+export const createColection = async (item, data) => {  
+  //const response = await db.collection(`relatorios/${item.owner}/${item.reference}`).doc(item.date).set(data)
+  //const response = await db.collection(`relatorios`).doc(item.owner).collection(item.reference).doc(item.date).set(data)
+
+  const response = await db.collection(`relatorios`).doc(item.propertie).collection(item.reference).doc(item.date).set(data)
+  
+  .then((doc) => {    
     return(
       {status: 200 }
     )
