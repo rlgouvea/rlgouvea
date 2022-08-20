@@ -62,7 +62,11 @@ const Properties = () => {
         status:{
             value: "",
             error: false
-        }
+        },
+        description: {
+            value: "",
+            error: false
+        },
     })
 
     const initialState= {
@@ -105,7 +109,11 @@ const Properties = () => {
         status:{
             value: "",
             error: false
-        }
+        },
+        description: {
+            value: "",
+            error: false
+        },
     }
 
     const handleChange = (e) => {
@@ -156,13 +164,15 @@ const Properties = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        window.scrollTo(0,0)
         setLoading(true)
-        const response = await addPropertie(form)
+        const response = await addPropertie(form)        
         if(response.status === 200){
             setTitle("Cadastrado com sucesso!")
             setLoading(false)
+            setStatusResp('success')
             setAlert(true)   
-            setForm(initialState)         
+            setForm(initialState)                     
         } else if(response.status === 400){
             setTitle("Erro no sistema, tente novamente mais tarde!")
             setLoading(false)
@@ -337,6 +347,13 @@ const Properties = () => {
                                 <option value="alugado" >Alugado</option>
                                 <option value="A venda" >A venda</option>
                             </select> 
+                        </FormGroup>                        
+                    </div>
+                    <div className="formFlex">
+                        <FormGroup>
+                            <label>Descrição</label>
+                            <textarea value={form.description.value} name="description" type='text' cols="50" rows="5" placeholder='Descrição' onChange={handleChange}
+                            style={{padding: 5}} />
                         </FormGroup>
                     </div>
                     <FormGroup>

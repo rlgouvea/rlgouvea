@@ -19,9 +19,12 @@ const Menu = ({open, setOpen}) => {
                     <li onClick={() => navigate('/properties')}>                    
                         Imóveis                    
                     </li>
-                    <li onClick={() => navigate('/newContract')}>                    
-                        Gerar Contrato                    
+                    <li onClick={() => navigate('/reports')}>                    
+                        Relatórios                    
                     </li>
+                    {/* <li onClick={() => navigate('/newContract')}>                    
+                        Gerar Contrato                    
+                    </li> */}
                 </ul>
             </div>
         </div>
