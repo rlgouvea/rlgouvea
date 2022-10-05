@@ -5,9 +5,9 @@ import './formEditStyle.scss'
 import Loading from "../../../Assets/Components/Loader"
 
 const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, handleDelete}) => {
-    // const [owners, setOwners] = useState([])
-    // const [renters, setRenters] = useState([])
+    const [ownerEditRegister, setOwnerEditRegister] = useState(propertie.owner)
     const [loading, setLoading] = useState(false)
+    
     const [form, setForm] = useState({
         id:{
             value: propertie.codigo,
@@ -72,26 +72,17 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
         })
     }
 
-    // const getOwners = async () => {        
-    //     setOwners([])
-    //     const response = await fetchProprietarios()        
-    //     response.docs.forEach(item =>{                               
-    //         setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
-    //     })     
-    //     setLoading(false)            
-    // }
+    const handleOwner = (e) => {
+        setOwnerEditRegister([...ownerEditRegister, e.target.value])        
+    }
 
-    // const getRenters = async () => {        
-    //     setRenters([])
-    //     const response = await fetchInquilinos()        
-    //     response.docs.forEach(item =>{                               
-    //         setRenters(prevState => [...prevState, [item.data(), {id:item.id}]])                  
-    //     })  
-    //     setLoading(false)               
-    // }
+    const removeProp = (owner) => {
+        const ownerFilter = ownerEditRegister.filter(remov => remov !== owner)
+        setOwnerEditRegister(ownerFilter)
+    }
 
     const handleSubmit = () => {       
-        handle(form)
+        handle(form,ownerEditRegister)
     }
 
     return(
@@ -134,7 +125,34 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                             </FormGroup>
                         </div>
                         <div className="formFlex">
-                            <FormGroup>
+                            <div className="formAddProp">
+                                <FormGroup>
+                                    <label>Proprietário</label>
+                                    <select value={form.owner.value} name="owner" onChange={handleOwner} >
+                                    <option value="" selected>Selecione o proprietário</option>
+                                        {
+                                            owners.length> 0 &&                
+                                            owners.map((owner, index)=>(
+                                                <option key={index} value={owner[0].name}>{owner[0].name}</option>
+                                            ))
+                                        }
+                                    </select>    
+                                </FormGroup>
+                                {
+                                    ownerEditRegister &&
+                                    ownerEditRegister.map(owner=>(
+                                        <div className="propName">
+                                            {owner}
+                                            <div className="propRemove" onClick={()=>removeProp(owner)}>
+                                                Remover
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>                        
+                        </div>  
+                        <div className="formFlex">
+                            {/* <FormGroup>
                                 <label>Proprietário</label>
                                 <select value={form.owner.value} name="owner" onChange={handleChange} >
                                 <option value="" selected>Selecione o proprietário</option>
@@ -145,7 +163,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                                         ))
                                     }
                                 </select>    
-                            </FormGroup>
+                            </FormGroup> */}
                             <FormGroup>
                                 <label>Inquilino</label>
                                 <select value={form.renter.value} name="renter" onChange={handleChange} >
