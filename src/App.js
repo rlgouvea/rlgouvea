@@ -6,6 +6,7 @@ import Renters from "./Pages/Renters";
 import Properties from "./Pages/Properties";
 import NewContract from "./Pages/NewContract";
 import Reports from "./Pages/Reports";
+import Survey from "./Pages/Survey";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/properties" element={<Properties/>} />
           <Route path="/newContract" element={<NewContract/>} />
           <Route path="/reports" element={<Reports/>} />
+          <Route path="/survey" element={<Survey/>} />
         </Routes>
       </Template>
     </BrowserRouter>

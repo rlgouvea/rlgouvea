@@ -22,6 +22,7 @@ const Properties = () => {
     const [alertDelete, setAlertDelete] = useState(false)
     const [alertEdit, setAlertEdit] = useState(false)
     const [statusResp, setStatusResp] = useState()
+    const [ownerRegister, setOwnerRegister] = useState([])
     const [form, setForm] = useState({
         codigo:{
             value: "",
@@ -166,13 +167,14 @@ const Properties = () => {
         e.preventDefault()
         window.scrollTo(0,0)
         setLoading(true)
-        const response = await addPropertie(form)        
+        const response = await addPropertie(form, ownerRegister)        
         if(response.status === 200){
             setTitle("Cadastrado com sucesso!")
             setLoading(false)
             setStatusResp('success')
             setAlert(true)   
-            setForm(initialState)                     
+            setForm(initialState)    
+            setOwnerRegister([])                 
         } else if(response.status === 400){
             setTitle("Erro no sistema, tente novamente mais tarde!")
             setLoading(false)
@@ -197,9 +199,9 @@ const Properties = () => {
         setAlertEdit(true)
     }
 
-    const handleEditPropertie = async (item) =>{
+    const handleEditPropertie = async (item, ownerEditRegister) =>{
         setLoading(true)
-        const response = await changePropertie(item)
+        const response = await changePropertie(item, ownerEditRegister)
         if(response.status === 200){
             setStatusResp('success')
             setAlertEdit(false)
@@ -239,6 +241,16 @@ const Properties = () => {
             console.log(response)
         }
     }
+    
+    const handleOwner = (e) => {
+        setOwnerRegister([...ownerRegister, e.target.value])        
+    }
+
+    const removeProp = (owner) => {
+        const ownerFilter = ownerRegister.filter(remov => remov !== owner)
+        setOwnerRegister(ownerFilter)
+    }
+    
     return(
     <div className="containerProperties">    
         {
@@ -311,18 +323,33 @@ const Properties = () => {
                         </FormGroup>
                     </div>
                     <div className="formFlex">
-                        <FormGroup>
-                            <label>Proprietário</label>
-                            <select value={form.owner.value} name="owner" onChange={handleChange} >
-                            <option value="" selected>Selecione o proprietário</option>
-                                {
-                                    owners.length> 0 &&                
-                                    owners.map((owner, index)=>(
-                                        <option key={index} value={owner[0].name}>{owner[0].name}</option>
-                                    ))
-                                }
-                            </select>    
-                        </FormGroup>
+                        <div className="formAddProp">
+                            <FormGroup>
+                                <label>Proprietário</label>
+                                <select value={form.owner.value} name="owner" onChange={handleOwner} >
+                                <option value="" selected>Selecione o proprietário</option>
+                                    {
+                                        owners.length> 0 &&                
+                                        owners.map((owner, index)=>(
+                                            <option key={index} value={owner[0].name}>{owner[0].name}</option>
+                                        ))
+                                    }
+                                </select>    
+                            </FormGroup>
+                            {
+                                ownerRegister &&
+                                ownerRegister.map(owner=>(
+                                    <div className="propName">
+                                        {owner}
+                                        <div className="propRemove" onClick={()=>removeProp(owner)}>
+                                            Remover
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>                        
+                    </div>    
+                    <div className="formFlex">
                         <FormGroup>
                             <label>Inquilino</label>
                             <select value={form.renter.value} name="renter" onChange={handleChange} >
@@ -336,8 +363,8 @@ const Properties = () => {
                                     ))
                                 }
                             </select> 
-                        </FormGroup>
-                    </div>
+                        </FormGroup>    
+                    </div>                
                     <div className="formFlex">
                         <FormGroup>
                             <label>Status</label>

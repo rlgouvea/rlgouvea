@@ -32,5 +32,36 @@
         display:flex;
         align-items: center;
         justify-content: space-evenly;
+
+        .formAddProp{
+
+            .propName{
+                z-index: 1;
+                position:relative;
+                width:100%;
+                text-align: center;
+                margin: 2px;
+                border-bottom: 1px solid rgb(163, 160, 160);
+
+                .propRemove{
+                    display:none;
+                    z-index: 10;
+                    background-color: rgb(76, 77, 77);
+                    position:absolute;
+                    top:0;
+                    color:white;
+                    width:100%;
+                }
+
+                &:hover{
+                    cursor: pointer;
+
+                    
+                    .propRemove{
+                        display:block;
+                    }
+                }
+            }
+        }
     }
 } 
