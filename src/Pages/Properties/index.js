@@ -8,6 +8,9 @@ import Table from "./TableProperties/index"
 import FormEditPropertie from "./FormEditPropertie"
 import AlertDelete from "../../Assets/Components/AlertDelete"
 
+import Owners from '../Owners'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
 const Properties = () => {
     const [owners, setOwners] = useState([])
     const [renters, setRenters] = useState([])
@@ -23,6 +26,7 @@ const Properties = () => {
     const [alertEdit, setAlertEdit] = useState(false)
     const [statusResp, setStatusResp] = useState()
     const [ownerRegister, setOwnerRegister] = useState([])
+    const [newRegisterOwner, setNewRegisterOwner] = useState(false)
     const [form, setForm] = useState({
         codigo:{
             value: "",
@@ -134,7 +138,7 @@ const Properties = () => {
         getRenters()
         getOwners()
         getProperties()
-    },[])
+    },[newRegisterOwner])
 
     const getProperties = async () => {
         setProperties([])
@@ -287,6 +291,27 @@ const Properties = () => {
         {
             registerProperties && 
             <ContainerForm>
+                <button 
+                onClick={()=>setNewRegisterOwner(true)}
+                style={{
+                    border:'none',
+                    backgroundColor:'transparent',
+                    display:'flex',
+                    alignItems:'center',
+                    marginBottom:10,
+                    cursor:'pointer'
+                }} >
+                    Cadastrar Proprietário 
+                    <AddCircleOutlineIcon/>
+                </button>
+                {
+                    newRegisterOwner &&
+                    <div className="newRegister">
+                        <div className="containerNewRegister">
+                            <Owners newRegister={newRegisterOwner} setNewRegister={setNewRegisterOwner} />
+                        </div>
+                    </div>
+                }
                 <form onSubmit={handleSubmit}>
                     <div className="formFlex">
                         <FormGroup>

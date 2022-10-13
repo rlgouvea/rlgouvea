@@ -18,6 +18,8 @@ import { Carousel } from 'react-responsive-carousel'
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { BiCopy } from "react-icons/bi"
 
 
 const Survey = () => {
@@ -31,6 +33,7 @@ const Survey = () => {
     const [alert, setAlert] = useState(false)
     const [images, setImages] = useState([])    
     const [option, setOption] = useState("")   
+    const [copied, setCopied] = useState(false)
 
     const [form, setForm] = useState({
         value:{
@@ -63,6 +66,37 @@ const Survey = () => {
         },        
     })
 
+    const initialState = {
+        value:{
+            value:"",
+            error: false
+        },
+        owner:{
+            value:"",
+            error: false
+        },
+        propertie:{
+            value:"",
+            error: false
+        },
+        day:{
+            value:"",
+            error: false
+        },
+        month:{
+            value:"",
+            error: false
+        },
+        year:{
+            value:"",
+            error: false
+        },
+        renter:{
+            value:"",
+            error: false
+        },   
+    }
+
     useEffect(()=>{            
         
         const getProperties = async () => {        
@@ -92,7 +126,7 @@ const Survey = () => {
 
         getProperties()
         getRenters()
-    },[])    
+    },[])        
 
     const { getRootProps, getInputProps } = useDropzone({
         accepted: 'images/*',
@@ -166,7 +200,7 @@ const Survey = () => {
         size * rows
         }&fit=crop&auto=format&dpr=2 2x`,
     };
-    }
+    }   
     
     return(
         <div className='containerSurvey'>
@@ -185,14 +219,14 @@ const Survey = () => {
             }   
             <ContainerForm style={{width:"95%", border:"none"}}>
                 <div className='menuHeader'>
-                    <ButtonControl onClick={()=>setOption("register")}>Cadastrar</ButtonControl>
-                    <ButtonControl onClick={()=>setOption("search")}>Pesquisar</ButtonControl>
+                    <ButtonControl onClick={()=>setOption("register") - setForm(initialState) - setImages([])}>Cadastrar</ButtonControl>
+                    <ButtonControl onClick={()=>setOption("search") - setForm(initialState) - setImages([])}>Pesquisar</ButtonControl>
                 </div>
                 {(option === "register" || option === "search") &&
                     <div className='formFlex'>
                         <FormGroup>
                             <label>Selecione o imóvel</label>
-                            <select name="propertie" onChange={handleEdit}>
+                            <select name="propertie" onChange={handleEdit} >
                                 <option selected disabled>Selecione o imóvel</option>
                                 {
                                     properties.length> 0 &&                
@@ -206,7 +240,7 @@ const Survey = () => {
                         </FormGroup>
                         <FormGroup>
                             <label>Selecione o inquilino</label>
-                            <select name="renter" onChange={handleEdit}>
+                            <select name="renter" onChange={handleEdit} >
                                 <option selected disabled>Selecione o inquilino</option>
                                 {
                                     renters.length> 0 &&                
@@ -249,52 +283,72 @@ const Survey = () => {
                 <ButtonControl onClick={()=>handleUpload()}>Enviar</ButtonControl>
             }   
             {option === "search" &&
-                <ButtonControl onClick={()=>getImages()}>Buscar</ButtonControl>
+                <>
+                    <ButtonControl onClick={()=>getImages()}>Buscar</ButtonControl>
+                    {
+                        images.length > 0 &&
+                        <>
+                        <div className='albumContainer'>                 
+                            
+                                {images.map((item) => (    
+                                    <div className='containerCard'>
+                                        <div className='card' key={item.img} cols={item.cols || 1} rows={item.rows || 1}>
+                                            <img
+                                                {...srcset(item.url, 121, item.rows, item.cols)}
+                                                alt={item.title}
+                                                loading="lazy"
+                                            />
+                                            <div className='link'>
+                                                <ImageDownloader
+                                                imageUrl={item.url}
+                                                imageTitle={item.name}
+                                                style={{cursor:'pointer', 
+                                                top:'45%',
+                                                left:'40%',
+                                                position:'relative',
+                                                border:'none',
+                                                backgroundColor:'transparent'
+                                                }}
+                                                >
+                                                Baixar
+                                                </ImageDownloader>
+                                            </div>                                
+                                        </div>    
+                                        <CopyToClipboard 
+                                        text={item.url}
+                                        onCopy={() => {
+                                            setCopied(true);
+                                            setTimeout(() => {
+                                            setCopied(false);
+                                            }, 3500);
+                                        }}
+                                        >
+                                            <button
+                                            style={{
+                                                backgroundColor: "transparent",
+                                                border: "none",
+                                                //width: "100%",
+                                                cursor: "pointer",
+                                            }}
+                                            >
+                                                Copie aqui o link da imagem
+                                            <BiCopy
+                                                size="1.3rem"
+                                                color={copied ? "blue" : "#00c569"}
+                                            />
+                                            </button>
+                                        </CopyToClipboard> 
+                                    </div>                                                       
+                                ))}
+                            
+                        </div>                
+                        </>
+                    } 
+                </> 
             }                                     
             
             {loading && uploadProgress}
-            
-            {
-                images.length > 0 &&
-                <>
-                <div className='albumContainer'>                 
-                    <ImageList
-                    sx={{ width: '100%', 
-                    backgroundColor: 'whitesmoke', 
-                    display:'flex',
-                    justifyContent:'center' }}
-                    variant="quilted"
-                    cols={4}
-                    rowHeight={170}
-                    gap={5}
-                    >
-                        {images.map((item) => (
-                            <ImageListItem className='card' key={item.img} cols={item.cols || 1} rows={item.rows || 1}>
-                            <img
-                                {...srcset(item.url, 121, item.rows, item.cols)}
-                                alt={item.title}
-                                loading="lazy"
-                            />
-                            <div className='link'>
-                                <ImageDownloader
-                                imageUrl={item.url}
-                                imageTitle={item.name}
-                                style={{cursor:'pointer', 
-                                backgroundColor: 'transparent',
-                                border:'none',
-                                color:'black',
-                                fontSize:'1em'
-                                }}
-                                >
-                                Baixar
-                                </ImageDownloader>
-                            </div>
-                            </ImageListItem>
-                        ))}
-                    </ImageList>
-                </div>                
-                </>
-            }            
+                                  
         </div>
     )
 }
