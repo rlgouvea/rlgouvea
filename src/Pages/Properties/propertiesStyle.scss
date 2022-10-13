@@ -64,4 +64,16 @@
             }
         }
     }
+
+    .newRegister{
+        z-index:99;
+        position:absolute;
+        top: 6rem;
+        width: 100%;
+        background-color: rgba(41, 212, 212, 0.966);
+
+        .containerNewRegister{
+            background-color: white;            
+        }
+    }
 } 

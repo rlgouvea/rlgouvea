@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const ContainerForm = styled.div`
-    width: 60%;
+    width: 80%;
     border: 1px solid rgb(163, 160, 160);
     display:flex;
     align-items:center;
