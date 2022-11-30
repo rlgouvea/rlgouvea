@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, ptBR } from '@mui/x-data-grid';
 import './styles.scss'
 
 export default function DataTable({owners, handleEdit}) {    
@@ -91,7 +91,8 @@ export default function DataTable({owners, handleEdit}) {
           rowsPerPageOptions={[5]}
           //checkboxSelection
           GridRowParams                    
-          onRowClick={(e)=>handleEdit(e.row)}          
+          onRowClick={(e)=>handleEdit(e.row)}    
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         />              
       }      
     </div>

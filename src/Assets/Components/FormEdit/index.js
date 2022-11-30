@@ -141,7 +141,7 @@ const FormEdit = ({view, setView, item, handle, handleDelete, handleEditOwner}) 
             error: false
         },
     })
-
+    
     useEffect (()=>{
         setForm({
             name:{
@@ -181,7 +181,7 @@ const FormEdit = ({view, setView, item, handle, handleDelete, handleEditOwner}) 
                 error: false
             },
             birth:{
-                value:item.birth,
+                value:item.birth ,
                 error: false
             },
             email:{
