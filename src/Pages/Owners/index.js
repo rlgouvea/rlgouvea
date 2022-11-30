@@ -24,7 +24,139 @@ const Owners = ({newRegister, setNewRegister}) => {
     const [title, setTitle] = useState()
     const [registerOwners, setRegisterOwners] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [status, setStatus] = useState()
     let newRow = []
+
+    const initialState = {
+        name:{
+            value:"",
+            error: false
+        },
+        phone:{
+            value:"",
+            error: false
+        },
+        adress:{
+            value:"",
+            error: false
+        },
+        mobile:{
+            value:"",
+            error: false
+        },
+        district:{
+            value:"",
+            error: false
+        },
+        city:{
+            value:"",
+            error: false
+        },
+        zip_code:{
+            value:"",
+            error: false
+        },
+        maritalStatus:{
+            value:"",
+            error: false
+        },
+        profession:{
+            value:"",
+            error: false
+        },
+        birth:{
+            value:"",
+            error: false
+        },
+        email:{
+            value:"",
+            error: false
+        },
+        cpf:{
+            value:"",
+            error: false
+        },
+        rg:{
+            value:"",
+            error: false
+        },
+        nacionality:{
+            value:"",
+            error: false
+        },
+        sonName:{
+            value:"",
+            error: false
+        },
+        sonPhone:{
+            value:"",
+            error: false
+        },
+        sonAdress:{
+            value:"",
+            error: false
+        },
+        sonMobile:{
+            value:"",
+            error: false
+        },
+        sonDistrict:{
+            value:"",
+            error: false
+        },
+        sonCity:{
+            value:"",
+            error: false
+        },
+        sonZip_code:{
+            value:"",
+            error: false
+        },
+        sonMaritalStatus:{
+            value:"",
+            error: false
+        },
+        sonProfession:{
+            value:"",
+            error: false
+        },
+        sonBirth:{
+            value:"",
+            error: false
+        },
+        sonEmail:{
+            value:"",
+            error: false
+        },
+        sonCpf:{
+            value:"",
+            error: false
+        },
+        sonRg:{
+            value:"",
+            error: false
+        },
+        sonNacionality:{
+            value:"",
+            error: false
+        },
+        bank:{
+            value:"",
+            error: false
+        },
+        ag:{
+            value:"",
+            error: false
+        },
+        count:{
+            value:"",
+            error: false
+        },
+        nameCount:{
+            value:"",
+            error: false
+        },
+    }
 
     const [form,setForm] = useState({
         name:{
@@ -187,12 +319,14 @@ const Owners = ({newRegister, setNewRegister}) => {
     
     const handleSubmit = async (e) =>{
         setLoading(true) 
-        e.preventDefault()
+        e.preventDefault()        
         const response = await addProp(form)        
         if(response.status === 200){
+            setStatus('success')
             setTitle("Cadastrado com sucesso!")
             setAlert(true)
             setRegisterOwners(!registerOwners)
+            setForm(initialState)
             getOwners()
         }           
         setLoading(false) 
@@ -216,8 +350,16 @@ const Owners = ({newRegister, setNewRegister}) => {
             getOwners()
             setAlertEdit(false) 
             setTitle('Deletado com sucesso!')  
+            setStatus('success')
             setAlert(true)  
-            setListOwners(false)                               
+            setListOwners(false)   
+            
+            setOwners([])
+            const response = await fetchProprietarios()        
+            response.docs.forEach(item =>{                               
+                setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
+            })              
+            setListOwners(!listOwners) 
             
         } 
         setLoading(false) 
@@ -238,22 +380,36 @@ const Owners = ({newRegister, setNewRegister}) => {
         setLoading(false) 
     }
 
-    const handleEdit = async (item) => {        
+    const handleEdit = async (item) => {              
         setOwnerEdit(item)
-        setAlertEdit(true)        
+        setAlertEdit(true)  
+              
     }
 
     const handleEditOwner = async (data) => {
         setLoading(true) 
+        setListOwners(false)
         const response = await changeOwner(data)        
         if(response.status === 200){
-            getOwners()
+            
             setAlertEdit(false) 
-            setTitle("Atualizado com sucesso!")  
+            setTitle("Atualizado com sucesso!") 
+            setStatus('success') 
             setAlert(true) 
+            setOwners([])
+            const response = await fetchProprietarios()        
+            response.docs.forEach(item =>{                               
+                setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
+            })  
+            setLoading(false)  
+            setListOwners(!listOwners)      
+            
                                 
-        } 
-        setLoading(false) 
+        } else{
+            setLoading(false) 
+
+        }
+        
     }
 
     const handleReload = () => {
@@ -282,7 +438,8 @@ const Owners = ({newRegister, setNewRegister}) => {
                 <AlertPopup
                 view={alert}
                 setView={setAlert}
-                title={title}            
+                title={title}     
+                status={status}       
                 />  
             }          
             {
@@ -405,7 +562,7 @@ const Owners = ({newRegister, setNewRegister}) => {
                             <FormGroup>
                                 <label>Nascimento</label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     name="birth"
                                     placeholder="Nascimento"
                                     onChange={handleChange}
@@ -548,7 +705,7 @@ const Owners = ({newRegister, setNewRegister}) => {
                             <FormGroup>
                                 <label>Nascimento</label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     name="sonBirth"
                                     placeholder="Nascimento"
                                     onChange={handleChange}
@@ -750,7 +907,7 @@ const Owners = ({newRegister, setNewRegister}) => {
                             <FormGroup>
                                 <label>Nascimento</label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     name="birth"
                                     placeholder="Nascimento"
                                     onChange={handleChange}
