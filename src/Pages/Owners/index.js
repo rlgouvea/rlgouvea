@@ -319,7 +319,7 @@ const Owners = ({newRegister, setNewRegister}) => {
     
     const handleSubmit = async (e) =>{
         setLoading(true) 
-        e.preventDefault()        
+        e.preventDefault()              
         const response = await addProp(form)        
         if(response.status === 200){
             setStatus('success')
@@ -1050,7 +1050,7 @@ const Owners = ({newRegister, setNewRegister}) => {
                             <FormGroup>
                                 <label>Nascimento</label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     name="sonBirth"
                                     placeholder="Nascimento"
                                     onChange={handleChange}
