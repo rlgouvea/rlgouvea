@@ -1,0 +1,28 @@
+.header {
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(15, 15, 218, 0.507);
+    color: white;
+    padding: 0 5%;
+
+    h3{
+        margin-left: 10px;
+        cursor: pointer;
+    }
+  
+    ul {
+      display: flex;
+      justify-content: space-between;
+      margin-right: 20px;
+  
+      li {
+        margin: 0 10px;
+        cursor: pointer;
+      }
+    }
+  }
+  

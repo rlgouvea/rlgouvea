@@ -1,0 +1,43 @@
+.containerAlert{
+    position:absolute;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.363);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  
+
+    .wrapperAlertDel{
+        width: 80%;
+        height: 15%;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;  
+             
+
+        @media(max-width: 767px){
+            height: 30%;
+        }
+
+        h3{
+            font-size: 2em;
+            text-align:center; 
+            margin-top: 2rem;           
+        }
+
+        .controlsDelete{            
+            width: 100%;
+            margin: 0 10px;
+            display: flex;                        
+            justify-content: space-evenly;   
+            margin-bottom: 1rem;;          
+        }
+    }
+}

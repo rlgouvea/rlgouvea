@@ -1,0 +1,79 @@
+.containerProperties{
+    width: 100%;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .menuHead{
+        width: 100%;
+        margin: 2rem 0;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        button{
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            transition: all .5s ;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover{
+                font-weight: bold;
+                border-radius: 0;
+            }
+        }
+    }
+    
+    .formFlex{
+        display:flex;
+        align-items: center;
+        justify-content: space-evenly;
+
+        .formAddProp{
+
+            .propName{
+                z-index: 1;
+                position:relative;
+                width:100%;
+                text-align: center;
+                margin: 2px;
+                border-bottom: 1px solid rgb(163, 160, 160);
+
+                .propRemove{
+                    display:none;
+                    z-index: 10;
+                    background-color: rgb(76, 77, 77);
+                    position:absolute;
+                    top:0;
+                    color:white;
+                    width:100%;
+                }
+
+                &:hover{
+                    cursor: pointer;
+
+                    
+                    .propRemove{
+                        display:block;
+                    }
+                }
+            }
+        }
+    }
+
+    .newRegister{
+        z-index:99;
+        position:absolute;
+        top: 6rem;
+        width: 100%;
+        background-color: rgba(41, 212, 212, 0.966);
+
+        .containerNewRegister{
+            background-color: white;            
+        }
+    }
+} 
