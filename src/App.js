@@ -14,12 +14,14 @@ import Login from "./Pages/Login";
 function App() {
   return (
     <BrowserRouter>
-      <Template>
+      {/* <Template> */}
         <Routes>
           <Route path="/login" element={<Login/>}/>
           <Route path="/" element={
           <Private>
-            <Home/>
+            <Template>
+              <Home/>
+            </Template>
           </Private>
           } /> 
           <Route path="/owners" element={
@@ -29,31 +31,41 @@ function App() {
           } />
           <Route path="/renters" element={
           <Private>
-            <Renters/>
+            <Template>
+              <Renters/>
+            </Template>
           </Private>
           } />
           <Route path="/properties" element={
           <Private>
-            <Properties/>
+            <Template>
+              <Properties/>
+            </Template>
           </Private>
           } />
           <Route path="/newContract" element={
           <Private>
-            <NewContract/>
+            <Template>
+              <NewContract/>
+            </Template>
           </Private>
           } />
           <Route path="/reports" element={
           <Private>
-            <Reports/>
+            <Template>
+              <Reports/>
+            </Template>
           </Private>
           } />
           <Route path="/survey" element={
           <Private>
-            <Survey/>
+            <Template>
+              <Survey/>
+            </Template>
           </Private>
           } />
         </Routes>
-      </Template>
+      {/* </Template> */}
     </BrowserRouter>
   );
 }
