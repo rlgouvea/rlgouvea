@@ -43,7 +43,7 @@ export default function Private({ children }){
   }
 
   if(!signed){
-    return <Navigate to='/'/>
+    return <Navigate to='/login'/>
   }
   return children
 }

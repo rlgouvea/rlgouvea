@@ -9,13 +9,19 @@ import Reports from "./Pages/Reports";
 import Survey from "./Pages/Survey";
 
 import Private from "./Private"
+import Login from "./Pages/Login";
 
 function App() {
   return (
     <BrowserRouter>
       <Template>
         <Routes>
-          <Route path="/" element={<Home/>} /> 
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/" element={
+          <Private>
+            <Home/>
+          </Private>
+          } /> 
           <Route path="/owners" element={
             <Private>
               <Owners/>
