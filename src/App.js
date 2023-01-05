@@ -8,20 +8,64 @@ import NewContract from "./Pages/NewContract";
 import Reports from "./Pages/Reports";
 import Survey from "./Pages/Survey";
 
+import Private from "./Private"
+import Login from "./Pages/Login";
+
 function App() {
   return (
     <BrowserRouter>
-      <Template>
+      {/* <Template> */}
         <Routes>
-          <Route path="/" element={<Home/>} /> 
-          <Route path="/owners" element={<Owners/>} />
-          <Route path="/renters" element={<Renters/>} />
-          <Route path="/properties" element={<Properties/>} />
-          <Route path="/newContract" element={<NewContract/>} />
-          <Route path="/reports" element={<Reports/>} />
-          <Route path="/survey" element={<Survey/>} />
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/" element={
+          <Private>
+            <Template>
+              <Home/>
+            </Template>
+          </Private>
+          } /> 
+          <Route path="/owners" element={
+            <Private>
+              <Owners/>
+            </Private>
+          } />
+          <Route path="/renters" element={
+          <Private>
+            <Template>
+              <Renters/>
+            </Template>
+          </Private>
+          } />
+          <Route path="/properties" element={
+          <Private>
+            <Template>
+              <Properties/>
+            </Template>
+          </Private>
+          } />
+          <Route path="/newContract" element={
+          <Private>
+            <Template>
+              <NewContract/>
+            </Template>
+          </Private>
+          } />
+          <Route path="/reports" element={
+          <Private>
+            <Template>
+              <Reports/>
+            </Template>
+          </Private>
+          } />
+          <Route path="/survey" element={
+          <Private>
+            <Template>
+              <Survey/>
+            </Template>
+          </Private>
+          } />
         </Routes>
-      </Template>
+      {/* </Template> */}
     </BrowserRouter>
   );
 }
