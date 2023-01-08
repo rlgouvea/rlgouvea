@@ -23,6 +23,13 @@ export const fetchInquilinos = async () => {
   return response
 }
 
+/******Função que faz o Get dos usuários******/
+export const fetchUsers = async () => {
+  const data = db.collection('users')
+  const response = await data.get()
+  return response
+}
+
 /******Função que faz o Get dos imóveis******/
 export const fetchProperties = async () => {
   const data = db.collection('imoveis')
@@ -97,6 +104,29 @@ export const addRenter = async (form) => {
       email: form.email.value,
       cpf: form.cpf.value,
       rg: form.rg.value,
+    }
+  )
+    .then((doc) => {
+      return (
+        { data: doc, status: 200 }
+      )
+    })
+    .catch((err) => {
+      return (
+        { status: 400 }
+      )
+    })
+
+  return response
+}
+
+/******Função que adiciona usuário******/
+export const addUser = async (form) => {
+
+  const response = await db.collection("users").add(
+    {
+      login: form.login.value,
+      senha: form.senha.value,
     }
   )
     .then((doc) => {
@@ -319,6 +349,23 @@ export const deleteRenter = async (id) => {
   return response
 }
 
+/******Função que faz o delete do usuário******/
+export const deleteUser = async (id) => {
+  const response = await db.collection("users").doc(id).delete()
+    .then(() => {
+      return (
+        { status: 200 }
+      )
+    })
+    .catch((err) => {
+      console.log(err)
+      return (
+        { status: 400 }
+      )
+    })
+  return response
+}
+
 /******Função que faz o delete dos proprietários******/
 export const deleteProp = async (id) => {
   const response = await db.collection("proprietarios").doc(id).delete()
@@ -381,6 +428,29 @@ export const changeRenter = async (item) => {
     })
   return response
 }
+
+/******Função que edição do usuário******/
+export const changeUser = async (item) => {
+
+  const response = await db.collection(`users`).doc(item.id).update(
+    {
+      login: item.login,
+      senha: item.senha,
+    }
+  )
+    .then(() => {
+      return (
+        { status: 200 }
+      )
+    })
+    .catch((err) => {
+      return (
+        { status: 400 }
+      )
+    })
+  return response
+}
+
 /******Função que edição dos proprietarios******/
 export const changeOwner = async (item) => {
 
