@@ -8,6 +8,7 @@ import NewContract from "./Pages/NewContract";
 import Reports from "./Pages/Reports";
 import Survey from "./Pages/Survey";
 import Admin from './Pages/Admin'
+import Register from './Pages/Register'
 
 import Private from "./Private"
 import Login from "./Pages/Login";
@@ -68,6 +69,13 @@ function App() {
             <Private>
               <Template>
                 <Admin/>
+              </Template>
+            </Private>
+          } />
+          <Route path="/register" element={
+            <Private>
+              <Template>
+                <Register/>
               </Template>
             </Private>
           } />

@@ -8,8 +8,14 @@ import { changeUser, deleteUser, fetchUsers, addUser } from "../../Services/rout
 import "./renterStyle.scss"
 import TableAdmin from "../../Assets/Components/Table/tableAdmin"
 import Loader from "../../Assets/Components/Loader"
+import { getAuth } from "firebase/auth";
 
 const Admin = () => {
+    
+    const auth = getAuth();
+    const user2 = auth.currentUser.email
+    // console.log('user: ' + JSON.stringify(user2))
+
     const [users, setUsers] = useState([])
     const [listUsers, setListUsers] = useState(false)
     const [userControl, setUserControl] = useState()

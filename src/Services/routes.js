@@ -8,6 +8,7 @@ import {
   deleteObject,
   uploadBytesResumable
 } from 'firebase/storage'
+import { getAuth } from "firebase/auth";
 
 /******Função que faz o Get dos proprietários******/
 export const fetchProprietarios = async () => {
@@ -121,12 +122,18 @@ export const addRenter = async (form) => {
 }
 
 /******Função que adiciona usuário******/
-export const addUser = async (form) => {
+export const addUser = async (email, uid) => {
+
+  // const auth = getAuth();
+  // const user2 = auth.currentUser.email
+  // console.log('user: ' + JSON.stringify(user2))
+
+  console.log('form: ' + email, uid)
 
   const response = await db.collection("users").add(
     {
-      login: form.login.value,
-      senha: form.senha.value,
+      login: email,
+      uid: uid,
     }
   )
     .then((doc) => {
