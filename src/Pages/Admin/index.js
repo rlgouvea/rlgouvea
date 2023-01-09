@@ -9,12 +9,15 @@ import "./renterStyle.scss"
 import TableAdmin from "../../Assets/Components/Table/tableAdmin"
 import Loader from "../../Assets/Components/Loader"
 import { getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
     
     const auth = getAuth();
     const user2 = auth.currentUser.email
     // console.log('user: ' + JSON.stringify(user2))
+
+    const navigate = useNavigate()
 
     const [users, setUsers] = useState([])
     const [listUsers, setListUsers] = useState(false)
@@ -117,6 +120,7 @@ const Admin = () => {
             setRegisterUser(!registerUser)
             setListUsers(false)
             setLoading(false)
+            navigate('/register', { replace: true })
         }
     
         const handleEdit = (item) => {        
@@ -148,6 +152,7 @@ const Admin = () => {
             <div className="menuHead">
                 <ButtonControl onClick={()=>handleListUsers()}>Listar Usuários</ButtonControl>
                 <ButtonControl onClick={()=>handleListRegister()}>Adicionar Usuários</ButtonControl>
+                {/* <ButtonControl onClick={navigate('/register', { replace: true })}>Adicionar Usuários</ButtonControl> */}
             </div>
             {
                 loading &&

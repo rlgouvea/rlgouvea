@@ -13,7 +13,7 @@ export default function Register(){
 
   const navigate = useNavigate()
 
-  const radomUser = async (email, uid) => {
+  const randomUser = async (email, uid) => {
     
     try {
         const response = await addUser(email, uid)
@@ -37,7 +37,7 @@ export default function Register(){
         
         console.log('register form: ' + email, value.user.uid)
 
-        radomUser(email, value.user.uid)
+        randomUser(email, value.user.uid)
 
         // navigate('/admin', { replace: true })
       })
@@ -85,9 +85,9 @@ export default function Register(){
           <button type="submit">Registrar</button>
         </form>
 
-        <Link className="button-link" to="/">
+        {/* <Link className="button-link" to="/">
           Já possui uma conta? Acesse aqui!
-        </Link>
+        </Link> */}
       </div>
     </div>
   )
