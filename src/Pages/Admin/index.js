@@ -152,7 +152,6 @@ const Admin = () => {
             <div className="menuHead">
                 <ButtonControl onClick={()=>handleListUsers()}>Listar Usuários</ButtonControl>
                 <ButtonControl onClick={()=>handleListRegister()}>Adicionar Usuários</ButtonControl>
-                {/* <ButtonControl onClick={navigate('/register', { replace: true })}>Adicionar Usuários</ButtonControl> */}
             </div>
             {
                 loading &&

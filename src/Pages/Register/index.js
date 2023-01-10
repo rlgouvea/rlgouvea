@@ -7,6 +7,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 import { addUser } from "../../Services/routes";
 
+import '../Register/register.scss'
+
 export default function Register(){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,7 +41,7 @@ export default function Register(){
 
         randomUser(email, value.user.uid)
 
-        // navigate('/admin', { replace: true })
+        navigate('/admin', { replace: true })
       })
       .catch((error) => {
         console.log('Erro ao cadastrar: ' + error)
@@ -60,35 +62,35 @@ export default function Register(){
 
 
   return(
-    <div className="home-container">
-      <div className="box-form">
+    <div className="register-container">
+        <h1>Cadastro de novo usuário</h1>
+      {/* <div className="box-form"> */}
 
-        <h1>Imobiliária RLGouvea</h1>
 
-        <span>CADASTRE-SE</span>
+        {/* <span>CADASTRE-SE</span> */}
 
         <form className="form" onSubmit={handleRegister}>
           <input 
             type="text" 
-            placeholder="Digite seu email"
+            placeholder="Digite um email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <input 
             type="password" 
-            placeholder="******"
+            placeholder="Digite uma senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit">Registrar</button>
+          <button type="submit">Cadastrar</button>
         </form>
 
         {/* <Link className="button-link" to="/">
           Já possui uma conta? Acesse aqui!
         </Link> */}
-      </div>
+      {/* </div> */}
     </div>
   )
 }
