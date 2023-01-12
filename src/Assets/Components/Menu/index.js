@@ -2,14 +2,15 @@ import "./stylesMenu.scss"
 import {useNavigate} from 'react-router-dom'
 
 // importei react, firebase/auth e FirebaseConfig
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { 
     signOut,
 } from 'firebase/auth'
 import { auth } from '../../../Configs/FirebaseConfig'
+import {Context} from '../../../Private'
 
 const Menu = ({open, setOpen}) => {
-
+    const { userRole } = useContext(Context);
     // adicionei user e userDetail
     const [user, setUser] = useState(false)
     const [userDetail, setUserDetail] = useState({})
@@ -45,6 +46,11 @@ const Menu = ({open, setOpen}) => {
                     <li onClick={() => navigate('/survey')}>                    
                         Vistorias                    
                     </li>
+                    {userRole === 'admin' &&
+                        <li onClick={() => navigate('/admin')}>                    
+                            Gerenciar Usuários                    
+                        </li>
+                    }
                     <li onClick={() => fazerLogout()}>                    
                         Sair                    
                     </li>

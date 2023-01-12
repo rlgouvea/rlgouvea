@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
 import Loader from "../../Assets/Components/Loader"
 import { addPropertie, changePropertie, deletePropertie, fetchInquilinos, fetchProperties, fetchProprietarios } from "../../Services/routes"
@@ -10,8 +10,10 @@ import AlertDelete from "../../Assets/Components/AlertDelete"
 
 import Owners from '../Owners'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import {Context} from '../../Private'
 
 const Properties = () => {
+    const { userRole } = useContext(Context);
     const [owners, setOwners] = useState([])
     const [renters, setRenters] = useState([])
     const [loading, setLoading] = useState(false)
@@ -199,8 +201,10 @@ const Properties = () => {
     }
 
     const handleEdit = (item) => {
-        setPropertieEdit(item)
-        setAlertEdit(true)
+        if(userRole ===   'admin' || userRole === 'atendente'){
+            setPropertieEdit(item)
+            setAlertEdit(true)
+        }
     }
 
     const handleEditPropertie = async (item, ownerEditRegister) =>{
@@ -282,7 +286,9 @@ const Properties = () => {
         <h1>Imóveis</h1> 
         <div className="menuHead">
             <ButtonControl onClick={()=>handleListProperties()}>Listar Imóveis</ButtonControl>
-            <ButtonControl onClick={()=>handleListRegister()}>Adicionar Imóvel</ButtonControl>
+            {(userRole ===   'admin' || userRole === 'atendente') &&
+                <ButtonControl onClick={()=>handleListRegister()}>Adicionar Imóvel</ButtonControl>
+            }
         </div>    
         {
             loading &&

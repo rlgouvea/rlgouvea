@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useContext } from "react"
 import { useState } from "react"
 import AlertDelete from "../../Assets/Components/AlertDelete"
 import AlertPopup from "../../Assets/Components/AlertPopup"
@@ -11,9 +11,11 @@ import { MdOutlineDeleteForever } from "react-icons/md"
 import { FaEdit } from "react-icons/fa"
 import Table from "../../Assets/Components/Table"
 import Loader from "../../Assets/Components/Loader"
+import {Context} from '../../Private'
 
 
 const Owners = ({newRegister, setNewRegister}) => {
+    const { userRole } = useContext(Context);
     const [owners, setOwners] = useState([])    
     const [listOwners, setListOwners] = useState(false)
     const [ownerControl, setControlOwner] = useState()
@@ -380,9 +382,11 @@ const Owners = ({newRegister, setNewRegister}) => {
         setLoading(false) 
     }
 
-    const handleEdit = async (item) => {              
-        setOwnerEdit(item)
-        setAlertEdit(true)  
+    const handleEdit = async (item) => {    
+        if(userRole ===   'admin' || userRole === 'atendente'){          
+            setOwnerEdit(item)
+            setAlertEdit(true)  
+        }
               
     }
 
@@ -425,7 +429,9 @@ const Owners = ({newRegister, setNewRegister}) => {
                 <h1>Proprietarios</h1> 
                 <div className="menuHead">
                     <ButtonControl onClick={()=>handleListOwners()}>Listar Proprietários</ButtonControl>
-                    <ButtonControl onClick={()=>handleListRegister()}>Adicionar Proprietário</ButtonControl>
+                    {(userRole ===   'admin' || userRole === 'atendente') &&
+                        <ButtonControl onClick={()=>handleListRegister()}>Adicionar Proprietário</ButtonControl>
+                    }                    
                 </div>
                 </>
             }

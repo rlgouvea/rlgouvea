@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useContext } from "react"
 import { useState } from "react"
 import AlertDelete from "../../Assets/Components/AlertDelete"
 import AlertPopup from "../../Assets/Components/AlertPopup"
@@ -9,8 +9,10 @@ import { addRenter } from "../../Services/routes"
 import "./renterStyle.scss"
 import TableRenters from "../../Assets/Components/Table/tableRenters"
 import Loader from "../../Assets/Components/Loader"
+import {Context} from '../../Private'
 
 const Renters = () => {
+    const { userRole } = useContext(Context);
     const [renters, setRenters] = useState([])
     const [listRenters, setListRenters] = useState(false)
     const [renterControl, setRenterControl] = useState()
@@ -150,9 +152,11 @@ const Renters = () => {
             setLoading(false)
         }
     
-        const handleEdit = (item) => {        
-            setOwnerEdit(item)
-            setAlertEdit(true)
+        const handleEdit = (item) => { 
+            if(userRole ===   'admin' || userRole === 'atendente'){
+                setOwnerEdit(item)
+                setAlertEdit(true)
+            }       
         }
 
         const handleEditRenter = async (data) => {
@@ -178,7 +182,9 @@ const Renters = () => {
             <h1>Inquilinos</h1> 
             <div className="menuHead">
                 <ButtonControl onClick={()=>handleListRenters()}>Listar Inquilinos</ButtonControl>
-                <ButtonControl onClick={()=>handleListRegister()}>Adicionar Inquilino</ButtonControl>
+                {(userRole ===   'admin' || userRole === 'atendente') &&
+                    <ButtonControl onClick={()=>handleListRegister()}>Adicionar Inquilino</ButtonControl>
+                }
             </div>
             {
                 loading &&
