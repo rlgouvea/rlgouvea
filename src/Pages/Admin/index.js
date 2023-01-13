@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useContext } from "react"
 import { useState } from "react"
 import AlertDelete from "../../Assets/Components/AlertDelete"
 import AlertPopup from "../../Assets/Components/AlertPopup"
@@ -12,9 +12,10 @@ import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../Configs/FirebaseConfig'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
+import {Context} from '../../Private'
 
 const Admin = () => {
-    
+    const { userRole } = useContext(Context);
     const auth = getAuth();
     const user2 = auth.currentUser.email
     // console.log('user: ' + JSON.stringify(user2))
@@ -75,8 +76,13 @@ const Admin = () => {
         })
     }
 
-    useEffect(()=>{        
+    useEffect(()=>{  
+        if(userRole !== 'admin'){
+            navigate('/')
+        }
         getUsers()
+
+
     },[])
 
     const getUsers = async () => {
@@ -203,8 +209,30 @@ const Admin = () => {
         }
     
         const handleReload = () => {
+            setListUsers(false)
             getUsers()
             setAlertEdit(false)
+        }
+
+        const handleSubmitEdit = async (item) => { 
+            setLoading(true)   
+            const data = {
+                uid: item.uid,
+                login: item.login,
+                role: item.role,
+                id: item.id
+            }
+            const response = await changeUser(data)        
+            if(response.status === 200){
+                setAlertEdit(false)
+                setTitle("Atualizado com sucesso!")  
+                setAlert(true) 
+                setStatus('success')  
+                getUsers()                   
+            } else{
+                setLoading(false)
+
+            }
         }
     
     return(
@@ -233,7 +261,7 @@ const Admin = () => {
                 view={alertEdit}
                 setView={setAlertEdit}
                 item={ownerEdit}
-                handle={handleReload}
+                handle={handleSubmitEdit}
                 handleDelete={handleDelete}
                 handleEditUser={handleEditUser}
                 />
@@ -287,7 +315,7 @@ const Admin = () => {
                 </ContainerForm>
             }
             {
-                listUsers &&
+                listUsers && users.length > 0 &&
                 <TableAdmin 
                     users={users}
                     getUsers={getUsers}

@@ -55,11 +55,12 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
             role: form.role.value,
             id: item.id
         }
-        const response = await changeUser(data)        
-        if(response.status === 200){
-            setTitle("Atualizado com sucesso!")  
-            setAlert(true)                      
-        } 
+        handle(data)
+        // const response = await changeUser(data)        
+        // if(response.status === 200){
+        //     setTitle("Atualizado com sucesso!")  
+        //     setAlert(true)                      
+        // } 
     }
 
     const handleAlertDel = () => {

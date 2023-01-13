@@ -34,7 +34,7 @@ export default function DataTable({users, handleEdit}) {
     { 
       field: 'login', 
       headerName: 'Login', 
-      width: 200 
+      width: 300 
     },
     { 
       field: 'role', 
