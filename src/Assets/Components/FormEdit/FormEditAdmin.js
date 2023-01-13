@@ -7,7 +7,6 @@ import "./styleFormEdit.scss"
 
 
 const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {   
-    console.log(item) 
     const [userControl, setUserControl] = useState()
     const [alertDel, setAlertDel] = useState(false)
     const [alert, setAlert] = useState(false)
@@ -17,7 +16,7 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
             value:"",
             error: false
         },
-        senha:{
+        role:{
             value:"",
             error: false
         },
@@ -29,8 +28,8 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
                 value:item.login,
                 error: false
             },
-            senha:{
-                value:item.senha,
+            role:{
+                value:item.role,
                 error: false
             },
         })
@@ -51,9 +50,10 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
     const handleSubmit = async (e) => {               
         e.preventDefault()       
         const data = {
-            id: item.id,
+            uid: item.uid,
             login: form.login.value,
-            senha: form.senha.value,
+            role: form.role.value,
+            id: item.id
         }
         const response = await changeUser(data)        
         if(response.status === 200){
@@ -70,7 +70,7 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
     
     return(
         <div className="containerEdit">
-            <div className="wrapperEdit"> 
+            <div className="wrapperEdit" style={{justifyContent:'center'}}> 
                 {
                     alertDel &&
                     <AlertDelete
@@ -98,14 +98,13 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <label>Senha</label>
-                            <input
-                                type="text"
-                                name="senha"
-                                placeholder="Senha"
-                                value={form.senha.value}
-                                onChange={handleChange}
-                            />
+                            <label>Permissão</label>
+                            <select name="role" onChange={handleChange} value={form.role.value}>
+                                <option disabled selected>Selecione...</option>
+                                <option value='admin'>Administrador</option>
+                                <option value='atendente'>Atendente</option>
+                                <option value='corretor'>Corretor</option>
+                            </select>
                         </FormGroup>
                     </div>
                 </form> 

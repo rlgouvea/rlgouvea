@@ -10,6 +10,8 @@ import TableAdmin from "../../Assets/Components/Table/tableAdmin"
 import Loader from "../../Assets/Components/Loader"
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { auth } from '../../Configs/FirebaseConfig'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 const Admin = () => {
     
@@ -29,6 +31,7 @@ const Admin = () => {
     const [title, setTitle] = useState()
     const [registerUser, setRegisterUser] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [status, setStatus] = useState("")
 
     const [form,setForm] = useState({
         login:{
@@ -39,7 +42,26 @@ const Admin = () => {
             value:"",
             error: false
         },
+        role:{
+            value:"",
+            error: false
+        },
     })
+
+    const initialState = {
+        login:{
+            value:"",
+            error: false
+        },
+        senha:{
+            value:"",
+            error: false
+        },
+        role:{
+            value:"",
+            error: false
+        },
+    }
 
     const handleChange = (e) => {
         const {name, value} = e.target
@@ -74,18 +96,57 @@ const Admin = () => {
     const handleSubmit = async (e) =>{
         setLoading(true)
         e.preventDefault()
-        const response = await addUser(form)
-        if(response.status === 200){
-            setTitle("Cadastrado com sucesso!")
-            setAlert(true)
-            setRegisterUser(!registerUser)
-            getUsers() 
-        }
-        setLoading(false)
+        if(form.login.value !== '' && form.senha.value !=='' && form.role.value !==''){
+            await createUserWithEmailAndPassword(auth, form.login.value, form.senha.value)
+            .then((value) => {
+      
+              console.log('Cadastrado com sucesso!')
+              console.log(value.user.uid)
+      
+              handleUser(value.user.uid)
+      
+            })
+            .catch((error) => {
+              console.log('Erro ao cadastrar: ' + error)
+        
+              if(error.code === 'auth/weak-password'){
+                setTitle('Senha precisa ter pelo menos 6 caracteres!')
+                setAlert(true)
+                setLoading(false)
+              } else if(error.code === 'auth/email-already-in-use'){
+                setTitle('Email já existe!')
+                setAlert(true)
+                setLoading(false)
+              } else if(error.code === 'auth/invalid-email'){
+                setTitle('Email inválido!')
+                setAlert(true)
+                setLoading(false)
+              }
+            })
+        }else{
+        alert('Preencha todos os campos!')
+        }        
     }
+
+        const handleUser = async (uid) => {
+            console.log(form.login.value, uid, form.role.value)
+            const response = await addUser(form.login.value, uid, form.role.value)
+            if(response.status === 200){
+                setTitle("Cadastrado com sucesso!")
+                setAlert(true)
+                setStatus('success')
+                setRegisterUser(!registerUser)
+                setForm(initialState)
+                getUsers() 
+            } else{
+                setTitle("Erro ao cadastrar, verifique os dados e tente novamente.")
+                setAlert(true)
+            }
+            setLoading(false)
+        }
     
-        const handleDelete = (item) => {                      
-            console.log(item)
+    
+        const handleDelete = (item) => {  
             setAlertDel(true)
             setTitle("Tem certeza que deseja excluir esse usuário?")  
             setUserControl(item)             
@@ -120,7 +181,7 @@ const Admin = () => {
             setRegisterUser(!registerUser)
             setListUsers(false)
             setLoading(false)
-            navigate('/register', { replace: true })
+            //navigate('/register', { replace: true })
         }
     
         const handleEdit = (item) => {        
@@ -162,7 +223,8 @@ const Admin = () => {
                 <AlertPopup
                 view={alert}
                 setView={setAlert}
-                title={title}            
+                title={title}   
+                status={status}         
                 />   
             }          
             {
@@ -192,22 +254,31 @@ const Admin = () => {
                     boxShadow: '0 0 20px black', width:"90%"}}>
                     <form onSubmit={handleSubmit}>
                         <FormGroup>
-                            <label>Usuário</label>
+                            <label>Email</label>
                             <input
                                 type="text"
                                 name="login"
-                                placeholder="Usuário"
+                                placeholder="Email"
                                 onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
                             <label>Senha</label>
                             <input
-                                type="text"
+                                type="password"
                                 name="senha"
                                 placeholder="Senha"
                                 onChange={handleChange}
                             />
+                        </FormGroup>
+                        <FormGroup>
+                            <label>Permissão</label>
+                            <select name="role" onChange={handleChange} value={form.role.value}>
+                                <option disabled selected>Selecione...</option>
+                                <option value='admin'>Administrador</option>
+                                <option value='atendente'>Atendente</option>
+                                <option value='corretor'>Corretor</option>
+                            </select>
                         </FormGroup>
                         <FormGroup>
                             <ButtonControl type="submit" style={{margin: '10px auto 0'}}>Cadastrar</ButtonControl>

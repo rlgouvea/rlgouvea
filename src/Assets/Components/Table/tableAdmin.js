@@ -5,7 +5,7 @@ import './styles.scss'
 export default function DataTable({users, handleEdit}) {    
   const [newRow,setNewRow] = React.useState([])    
   const [heaveRow, setHeaveRow] = React.useState(false)  
-
+  
   React.useEffect(()=>{
     handleListUsers()
   },[])  
@@ -15,9 +15,10 @@ export default function DataTable({users, handleEdit}) {
     let rowsConfig = []
     for(let x=0;x<users.length;x++){        
       const newItem = {   
-          id:users[x][1].id,
-          login:users[x][0].login, 
-          senha:users[x][0].senha,
+        id:users[x][1].id,
+        login:users[x][0].login, 
+        role:users[x][0].role,
+        uid:users[x][0].uid,
       }
       rowsConfig = rowsConfig.concat(newItem)
     }
@@ -36,8 +37,8 @@ export default function DataTable({users, handleEdit}) {
       width: 200 
     },
     { 
-      field: 'senha', 
-      headerName: 'Senha', 
+      field: 'role', 
+      headerName: 'Permissão', 
       sortable: false,
       width: 130 
     },

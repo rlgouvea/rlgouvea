@@ -420,7 +420,7 @@ const Owners = ({newRegister, setNewRegister}) => {
         getOwners()
         setAlertEdit(false)
     }
-    
+    console.log(userRole)
     return(
         <div className="containerOwner">
             {

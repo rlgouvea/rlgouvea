@@ -122,7 +122,7 @@ export const addRenter = async (form) => {
 }
 
 /******Função que adiciona usuário******/
-export const addUser = async (email, uid) => {
+export const addUser = async (email, uid, role) => {
 
   // const auth = getAuth();
   // const user2 = auth.currentUser.email
@@ -134,6 +134,7 @@ export const addUser = async (email, uid) => {
     {
       login: email,
       uid: uid,
+      role: role
     }
   )
     .then((doc) => {
@@ -442,7 +443,8 @@ export const changeUser = async (item) => {
   const response = await db.collection(`users`).doc(item.id).update(
     {
       login: item.login,
-      senha: item.senha,
+      role: item.role,
+      uid: item.uid
     }
   )
     .then(() => {

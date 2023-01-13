@@ -14,7 +14,7 @@ function Private({ children }){
   const [userRole, setUserRole] = useState("")
   const [loading, setLoading] = useState(true)
   const [signed, setSigned] = useState(false)
-
+  
   useEffect(() => {
     async function checkLogin(){
       const unsub = onAuthStateChanged(auth, (user)=> {
