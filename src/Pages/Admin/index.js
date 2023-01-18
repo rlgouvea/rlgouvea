@@ -302,7 +302,7 @@ const Admin = () => {
                         <FormGroup>
                             <label>Permissão</label>
                             <select name="role" onChange={handleChange} value={form.role.value}>
-                                <option disabled selected>Selecione...</option>
+                                <option selected value='' >Selecione...</option>
                                 <option value='admin'>Administrador</option>
                                 <option value='atendente'>Atendente</option>
                                 <option value='corretor'>Corretor</option>

@@ -153,19 +153,45 @@ const Properties = () => {
     
     const getOwners = async () => {        
         setOwners([])
+        const ownersDesordened = []
         const response = await fetchProprietarios()        
-        response.docs.forEach(item =>{                               
-            setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
+        response.docs.forEach(item =>{                
+            ownersDesordened.push(Object.assign(item.data(), {id:item.id}))
+            //setOwners(prevState => [...prevState, [item.data(), {id:item.id}]])                  
         })     
+        const ownerOrdened = ownersDesordened.sort(function(a,b) {
+            if (a.name > b.name) {
+                return 1;
+              }
+              if (a.name < b.name) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+        })
+        setOwners(ownerOrdened)
         setLoading(false)            
     }
 
-    const getRenters = async () => {        
+    const getRenters = async () => {    
+        const rentersDesordened = []    
         setRenters([])
         const response = await fetchInquilinos()        
         response.docs.forEach(item =>{                               
-            setRenters(prevState => [...prevState, [item.data(), {id:item.id}]])                  
+            rentersDesordened.push(Object.assign(item.data(), {id:item.id}))
+            //setRenters(prevState => [...prevState, [item.data(), {id:item.id}]])                  
         })  
+        const rentersOrdened = rentersDesordened.sort(function(a,b) {
+            if (a.name > b.name) {
+                return 1;
+              }
+              if (a.name < b.name) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+        })
+        setRenters(rentersOrdened)
         setLoading(false)               
     }
 
@@ -362,7 +388,7 @@ const Properties = () => {
                                     {
                                         owners.length> 0 &&                
                                         owners.map((owner, index)=>(
-                                            <option key={index} value={owner[0].name}>{owner[0].name}</option>
+                                            <option key={index} value={owner.name}>{owner.name}</option>
                                         ))
                                     }
                                 </select>    
@@ -390,7 +416,7 @@ const Properties = () => {
                                     renters.length> 0 &&
                                 
                                     renters.map((renter, index)=>(
-                                        <option key={index} value={renter[0].name}>{renter[0].name}</option>
+                                        <option key={index} value={renter.name}>{renter.name}</option>
                                     ))
                                 }
                             </select> 
