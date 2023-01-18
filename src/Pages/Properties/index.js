@@ -257,10 +257,10 @@ const Properties = () => {
         setTitle("Tem certeza que deseja excluir esse imóvel?")
         setAlertDelete(true)
     }
-
+    
     const handleDeletePropertie = async (item) => {   
         setLoading(true)              
-        const response = await deletePropertie(item.value)        
+        const response = await deletePropertie(propertieDelete.id.value)        
         if(response.status === 200){            
             setAlertDelete(false)
             setAlertEdit(false)
