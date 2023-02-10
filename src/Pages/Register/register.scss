@@ -27,14 +27,14 @@
   margin-bottom: 28px;
 }
 
-.form{
+.form-register{
   display: flex;
   flex-direction: column;
   width: 90%;
   max-width: 600px;
 }
 
-.form input{
+.form-register input{
   border:0;
   margin-bottom: 12px;
   height: 36px;
@@ -42,16 +42,17 @@
   padding: 0 8px;
 }
 
-.form button{
+.form-register button{
   height: 36px;
-  border:0;
+  border: 10px;
   border-radius: 4px;
   background-color: #3366ff;
   color: #FFF;
   font-size: 18px;
+  // padding: 10px;
 }
 
-.form textarea{
+.form-register textarea{
   margin-bottom: 12px;
   border:0;
   height: 90px;
@@ -59,7 +60,7 @@
   border-radius: 4px;
 } 
 
-.button-link{
+.button-register{
   color: #b4b8bb;
   text-decoration: none;
   margin: 14px 0;

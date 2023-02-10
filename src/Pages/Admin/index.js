@@ -4,15 +4,20 @@ import AlertDelete from "../../Assets/Components/AlertDelete"
 import AlertPopup from "../../Assets/Components/AlertPopup"
 import FormEditAdmin from "../../Assets/Components/FormEdit/FormEditAdmin"
 import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
-import { changeUser, deleteUser, fetchUsers, addUser } from "../../Services/routes"
+import { changeUser, deleteUserFirestore, fetchUsers, addUser } from "../../Services/routes"
 import "./renterStyle.scss"
 import TableAdmin from "../../Assets/Components/Table/tableAdmin"
 import Loader from "../../Assets/Components/Loader"
-import { getAuth } from "firebase/auth";
+import { 
+    getAuth,
+    deleteUser, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword 
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../Configs/FirebaseConfig'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
 import {Context} from '../../Private'
+import firebase from 'firebase/auth'
 
 const Admin = () => {
     const { userRole } = useContext(Context);
@@ -151,16 +156,57 @@ const Admin = () => {
             setLoading(false)
         }
     
+        // // abaixo do setLoading
+        // const adminAuth = getAuth()
+        // const adminEmail = 'educwb@gmail.com'
+        // const adminPassword = 'educwb@gmail.com'
+
+        // signInWithEmailAndPassword(adminAuth, adminEmail, adminPassword)
+        //     .then((e) => {
+        //         console.log(e)
+        //     })
+        //     .catch((error) => {
+        //         console.log(error)
+        //     })
+
+        const deleteUserAuthentication = async () =>{
+            // setLoading(true)
+            
+            function deleteOtherUserAuthAccount(otherUserUID) {
+                auth().deleteUser(otherUserUID)
+                  .then(function() {
+                    console.log("User deleted successfully");
+                  })
+                  .catch(function(error) {
+                    console.error("Error deleting user: ", error);
+                  });
+              }
+
+
+            // const userAtual = getAuth()
+
+            // userAtual.getUser(userControl.uid)
+            // userAtual.getUser('w0o31dAIV2PE1wHvQ4leQB0zCpo1')
+            //     .then((userRecord) => {
+            //         // See the UserRecord reference doc for the contents of userRecord.
+            //         console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+            //         deleteUser(userRecord)
+            //     })
+            //     .catch((error) => {
+            //         console.log('Error fetching user data:', error);
+            //     });
+
+        }
     
         const handleDelete = (item) => {  
             setAlertDel(true)
             setTitle("Tem certeza que deseja excluir esse usuário?")  
-            setUserControl(item)             
+            setUserControl(item)
         }
 
         const deleteUsers = async () => {
             setLoading(true)
-            const response = await deleteUser(userControl.id)
+            const response = await deleteUserFirestore(userControl.id)
             if(response.status === 200){
                 setLoading(false)
                 setAlertDel(false)
@@ -272,7 +318,8 @@ const Admin = () => {
                 title={title}
                 view={alertDel}
                 setView={setAlertDel}
-                handle={deleteUsers}
+                // handle={deleteUsers}
+                handle={deleteUserAuthentication}
                 // item={renterControl}
                 />
             } 

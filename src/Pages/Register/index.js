@@ -69,7 +69,7 @@ export default function Register(){
 
         {/* <span>CADASTRE-SE</span> */}
 
-        <form className="form" onSubmit={handleRegister}>
+        <form className="form-register" onSubmit={handleRegister}>
           <input 
             type="text" 
             placeholder="Digite um email"
@@ -85,6 +85,7 @@ export default function Register(){
           />
 
           <button type="submit">Cadastrar</button>
+          <button type="submit">Cancelar</button>
         </form>
 
         {/* <Link className="button-link" to="/">

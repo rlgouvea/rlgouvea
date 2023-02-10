@@ -3,9 +3,12 @@ import { changeUser } from "../../../Services/routes"
 import { ButtonControl, FormGroup } from "../GlobalStyles"
 import AlertDelete from "../AlertDelete"
 import Alert from "../Alert"
-import "./styleFormEdit.scss"
+import "./styleFormEdit.scss" 
+
+import deleteUserAuthentication from "../../../Pages/Admin"
 
 
+// const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {   
 const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {   
     const [userControl, setUserControl] = useState()
     const [alertDel, setAlertDel] = useState(false)
@@ -78,6 +81,7 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
                     title={title}
                     view={view}
                     setView={setView}
+                    // handle={handleDelete}
                     handle={handleDelete}
                     item={userControl}
                     />
@@ -123,6 +127,8 @@ const FormEditAdmin = ({view, setView, item, handle, handleDelete}) => {
                     </ButtonControl>
                     <ButtonControl 
                     onClick={()=>handleDelete(item)
+                    // onClick={()=>console.log(item)
+                    // onClick={()=>deleteUserAuthentication(item)
                     }                        
                     >
                         Deletar

@@ -124,10 +124,6 @@ export const addRenter = async (form) => {
 /******Função que adiciona usuário******/
 export const addUser = async (email, uid, role) => {
 
-  // const auth = getAuth();
-  // const user2 = auth.currentUser.email
-  // console.log('user: ' + JSON.stringify(user2))
-
   console.log('form: ' + email, uid)
 
   const response = await db.collection("users").add(
@@ -357,8 +353,8 @@ export const deleteRenter = async (id) => {
   return response
 }
 
-/******Função que faz o delete do usuário******/
-export const deleteUser = async (id) => {
+/******Função que faz o delete do usuário******/ 
+export const deleteUserFirestore = async (id) => {
   const response = await db.collection("users").doc(id).delete()
     .then(() => {
       return (
