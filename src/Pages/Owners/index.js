@@ -12,7 +12,6 @@ import { FaEdit } from "react-icons/fa"
 import Table from "../../Assets/Components/Table"
 import Loader from "../../Assets/Components/Loader"
 
-
 const Owners = ({newRegister, setNewRegister}) => {
     const [owners, setOwners] = useState([])    
     const [listOwners, setListOwners] = useState(false)
@@ -296,7 +295,7 @@ const Owners = ({newRegister, setNewRegister}) => {
         setForm({
             ...form,
             [name]:{
-                value,
+                value: value.toUpperCase(),
                 error: false
             }
         })
@@ -475,7 +474,7 @@ const Owners = ({newRegister, setNewRegister}) => {
                                 <input
                                     type="text"
                                     name="name"
-                                    placeholder="Nome"
+                                    placeholder="Nome Completo do Proprietário"
                                     onChange={handleChange}
                                 />
                             </FormGroup>

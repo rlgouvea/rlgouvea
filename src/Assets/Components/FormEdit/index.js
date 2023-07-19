@@ -287,45 +287,48 @@ const FormEdit = ({view, setView, item, handle, handleDelete, handleEditOwner}) 
         })
     }
 
-    const handleSubmit = async (e) => {               
-        e.preventDefault()       
+     const handleSubmit = async (e) => {
+        e.preventDefault();
+    
         const data = {
             id: item.id,
-            name: form.name.value,
-            phone: form.phone.value,                           
-            adress:form.adress.value,
-            mobile:form.mobile.value,
-            district:form.district.value,
-            city:form.city.value,
-            zip_code:form.zip_code.value,
-            maritalStatus:form.maritalStatus.value,
-            profession:form.profession.value,
-            birth:form.birth.value,
-            email: form.email.value,
-            cpf: form.cpf.value,  
-            rg:form.rg.value,
-            nacionality:form.nacionality.value,
-            sonName:form.sonName.value,
-            sonPhone:form.sonPhone.value,
-            sonAdress:form.sonAdress.value,
-            sonMobile:form.sonMobile.value,
-            sonDistrict:form.sonDistrict.value,
-            sonCity:form.sonCity.value,
-            sonZip_code:form.sonZip_code.value,
-            sonMaritalStatus:form.sonMaritalStatus.value,
-            sonProfession:form.sonProfession.value,
-            sonBirth:form.sonBirth.value,
-            sonEmail:form.sonEmail.value,
-            sonCpf:form.sonCpf.value,
-            sonRg:form.sonRg.value,
-            sonNacionality:form.sonNacionality.value,
-            bank:form.bank.value,
-            ag:form.ag.value,
-            count:form.count.value,
-            nameCount:form.nameCount.value,
-        }        
-        handleEditOwner(data)
-    }
+            name: form.name.value.toUpperCase(),
+            phone: form.phone.value,
+            adress: form.adress.value.toUpperCase(),
+            mobile: form.mobile.value,
+            district: form.district.value.toUpperCase(),
+            city: form.city.value.toUpperCase(),
+            zip_code: form.zip_code.value,
+            maritalStatus: form.maritalStatus.value.toUpperCase(),
+            profession: form.profession.value.toUpperCase(),
+            birth: form.birth.value,
+            email: form.email.value.toLowerCase(),
+            cpf: form.cpf.value,
+            rg: form.rg.value,
+            nacionality: form.nacionality.value.toUpperCase(),
+            sonName: form.sonName.value.toUpperCase(),
+            sonPhone: form.sonPhone.value,
+            sonAdress: form.sonAdress.value.toUpperCase(),
+            sonMobile: form.sonMobile.value,
+            sonDistrict: form.sonDistrict.value.toUpperCase(),
+            sonCity: form.sonCity.value.toUpperCase(),
+            sonZip_code: form.sonZip_code.value,
+            sonMaritalStatus: form.sonMaritalStatus.value.toUpperCase(),
+            sonProfession: form.sonProfession.value.toUpperCase(),
+            sonBirth: form.sonBirth.value,
+            sonEmail: form.sonEmail.value.toLowerCase(),
+            sonCpf: form.sonCpf.value,
+            sonRg: form.sonRg.value,
+            sonNacionality: form.sonNacionality.value.toUpperCase(),
+            bank: form.bank.value.toUpperCase(),
+            ag: form.ag.value,
+            count: form.count.value.toUpperCase(),
+            nameCount: form.nameCount.value.toUpperCase(),
+        };
+    
+        handleEditOwner(data);
+    };
+    
 
     const handleAlertDel = () => {
         handleDelete(item)
