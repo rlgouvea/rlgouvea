@@ -46,6 +46,9 @@ const Menu = ({open, setOpen}) => {
                     <li onClick={() => navigate('/survey')}>                    
                         Vistorias                    
                     </li>
+                    <li onClick={() => navigate('/teste')}>                    
+                        Teste                    
+                    </li>
                     {userRole === 'admin' &&
                         <li onClick={() => navigate('/admin')}>                    
                             Gerenciar Usuários                    

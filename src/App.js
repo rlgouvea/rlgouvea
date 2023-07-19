@@ -10,6 +10,8 @@ import Survey from "./Pages/Survey";
 import Admin from './Pages/Admin'
 import Register from './Pages/Register'
 
+import Teste from './Pages/Teste'
+
 import {Private} from "./Private"
 import Login from "./Pages/Login";
 
@@ -78,6 +80,13 @@ function App() {
             <Private>
               <Template>
                 <Register/>
+              </Template>
+            </Private>
+          } />
+          <Route path="/teste" element={
+            <Private>
+              <Template>
+                <Teste/>
               </Template>
             </Private>
           } />
