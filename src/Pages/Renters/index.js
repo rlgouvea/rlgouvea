@@ -75,7 +75,7 @@ const Renters = () => {
         setForm({
             ...form,
             [name]:{
-                value,
+                value: value.toUpperCase(),
                 error: false
             }
         })
@@ -223,7 +223,7 @@ const Renters = () => {
                             <input
                                 type="text"
                                 name="name"
-                                placeholder="Nome"
+                                placeholder="Nome Completo do(a) Inquilino(a)"
                                 onChange={handleChange}
                             />
                         </FormGroup>

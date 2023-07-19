@@ -124,15 +124,15 @@ const FormEditRenter = ({view, setView, item, handle, handleDelete}) => {
         e.preventDefault()       
         const data = {
             id: item.id,
-            name: form.name.value,
+            name: form.name.value.toUpperCase(),
             phone: form.phone.value,
             phone2: form.phone2.value,
             phone3: form.phone3.value,
-            maritalStatus:form.maritalStatus.value,
-            profession:form.profession.value,
-            nationality:form.nationality.value,
+            maritalStatus:form.maritalStatus.value.toUpperCase(),
+            profession:form.profession.value.toUpperCase(),
+            nationality:form.nationality.value.toUpperCase(),
             birth:form.birth.value,
-            email: form.email.value,
+            email: form.email.value.toLowerCase(),
             cpf: form.cpf.value,  
             rg:form.rg.value,
         }

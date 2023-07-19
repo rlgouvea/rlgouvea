@@ -26,7 +26,9 @@ function App() {
           } /> 
           <Route path="/owners" element={
             <Private>
-              <Owners/>
+              <Template>
+                <Owners/>
+              </Template>
             </Private>
           } />
           <Route path="/renters" element={
