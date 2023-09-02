@@ -86,17 +86,17 @@ export const addRenter = async (form) => {
 
   const response = await db.collection("inquilinos").add(
     {
-      name: form.name.value,
-      phone: form.phone.value,
-      phone2: form.phone2.value,
-      phone3: form.phone3.value,
-      maritalStatus: form.maritalStatus.value,
-      profession: form.profession.value,
-      nationality: form.nationality.value,
-      birth: form.birth.value,
-      email: form.email.value,
-      cpf: form.cpf.value,
-      rg: form.rg.value,
+      name: form.name,
+      phone: form.phone,
+      phone2: form.phone2,
+      phone3: form.phone3,
+      maritalStatus: form.maritalStatus,
+      profession: form.profession,
+      nationality: form.nationality,
+      birth: form.birth,
+      email: form.email,
+      cpf: form.cpf,
+      rg: form.rg,
     }
   )
     .then((doc) => {

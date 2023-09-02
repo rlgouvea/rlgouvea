@@ -228,9 +228,9 @@ const Properties = () => {
         setAlertDelete(true)
     }
 
-    const handleDeletePropertie = async (item) => {   
+    const handleDeletePropertie = async () => { 
         setLoading(true)              
-        const response = await deletePropertie(item.value)        
+        const response = await deletePropertie(propertieDelete.id.value)        
         if(response.status === 200){            
             setAlertDelete(false)
             setAlertEdit(false)
@@ -244,6 +244,7 @@ const Properties = () => {
             setLoading(false)
             console.log(response)
         }
+        setLoading(false)
     }
     
     const handleOwner = (e) => {
@@ -363,8 +364,8 @@ const Properties = () => {
                             </FormGroup>
                             {
                                 ownerRegister &&
-                                ownerRegister.map(owner=>(
-                                    <div className="propName">
+                                ownerRegister.map((owner, i)=>(
+                                    <div className="propName" key={i} >
                                         {owner}
                                         <div className="propRemove" onClick={()=>removeProp(owner)}>
                                             Remover

@@ -6,8 +6,7 @@ import Alert from "../Alert"
 import "./styleFormEdit.scss"
 
 
-const FormEditRenter = ({view, setView, item, handle, handleDelete}) => {   
-    console.log(item) 
+const FormEditRenter = ({view, setView, item, handle, handleDelete, handleEditRenter}) => {   
     const [renterControl, setRenterControl] = useState()
     const [alertDel, setAlertDel] = useState(false)
     const [alert, setAlert] = useState(false)
@@ -136,11 +135,12 @@ const FormEditRenter = ({view, setView, item, handle, handleDelete}) => {
             cpf: form.cpf.value,  
             rg:form.rg.value,
         }
-        const response = await changeRenter(data)        
-        if(response.status === 200){
-            setTitle("Atualizado com sucesso!")  
-            setAlert(true)                      
-        } 
+        handleEditRenter(data)
+        // const response = await changeRenter(data)        
+        // if(response.status === 200){
+        //     setTitle("Atualizado com sucesso!")  
+        //     setAlert(true)                      
+        // } 
     }
 
     const handleAlertDel = () => {

@@ -8,7 +8,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
     const [ownerEditRegister, setOwnerEditRegister] = useState(propertie.owner)
     const [loading, setLoading] = useState(false)
     
-    const [form, setForm] = useState({
+    const [data, setData] = useState({
         id:{
             value: propertie.codigo,
             error: false
@@ -63,8 +63,8 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
     const handleChange = (e) => {
         const {name, value} = e.target
 
-        setForm({
-            ...form,
+        setData({
+            ...data,
             [name]:{
                 value,
                 error: false
@@ -82,7 +82,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
     }
 
     const handleSubmit = () => {       
-        handle(form,ownerEditRegister)
+        handle(data,ownerEditRegister)
     }
 
     return(
@@ -93,42 +93,42 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                         <div className="formFlex">
                             <FormGroup>
                                 <label>Código do imóvel</label>
-                                <input value={form.codigo.value} name="codigo" type='text' placeholder='Código' onChange={handleChange} />
+                                <input value={data.codigo.value} name="codigo" type='text' placeholder='Código' onChange={handleChange} />
                             </FormGroup>
                             <FormGroup>
                                 <label>Cidade</label>
-                                <input value={form.city.value} name="city" type='text' placeholder='Cidade' onChange={handleChange} />
+                                <input value={data.city.value} name="city" type='text' placeholder='Cidade' onChange={handleChange} />
                             </FormGroup>
                             <FormGroup>
                                 <label>Estado</label>
-                                <input value={form.state.value} name="state" type='text' placeholder='Estado' onChange={handleChange} />
+                                <input value={data.state.value} name="state" type='text' placeholder='Estado' onChange={handleChange} />
                             </FormGroup>
                         </div>
                         <div className="formFlex">
                             <FormGroup>
                                 <label>Bairro</label>
-                                <input value={form.district.value} name="district" type='text' placeholder='Bairro' onChange={handleChange} />
+                                <input value={data.district.value} name="district" type='text' placeholder='Bairro' onChange={handleChange} />
                             </FormGroup>
                             <FormGroup>
                                 <label>Rua</label>
-                                <input value={form.street.value} name="street" type='text' placeholder='Rua' onChange={handleChange} />
+                                <input value={data.street.value} name="street" type='text' placeholder='Rua' onChange={handleChange} />
                             </FormGroup>
                         </div>
                         <div className="formFlex">
                             <FormGroup>
                                 <label>Número</label>
-                                <input value={form.number.value} name="number" type='text' placeholder='Número' onChange={handleChange} />
+                                <input value={data.number.value} name="number" type='text' placeholder='Número' onChange={handleChange} />
                             </FormGroup>
                             <FormGroup>
                                 <label>Cep</label>
-                                <input value={form.zip_code.value} name="zip_code" type='text' placeholder='Cep' onChange={handleChange} />
+                                <input value={data.zip_code.value} name="zip_code" type='text' placeholder='Cep' onChange={handleChange} />
                             </FormGroup>
                         </div>
                         <div className="formFlex">
                             <div className="formAddProp">
                                 <FormGroup>
                                     <label>Proprietário</label>
-                                    <select value={form.owner.value} name="owner" onChange={handleOwner} >
+                                    <select value={data.owner.value} name="owner" onChange={handleOwner} >
                                     <option value="" selected>Selecione o proprietário</option>
                                         {
                                             owners.length> 0 &&                
@@ -154,7 +154,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                         <div className="formFlex">
                             {/* <FormGroup>
                                 <label>Proprietário</label>
-                                <select value={form.owner.value} name="owner" onChange={handleChange} >
+                                <select value={data.owner.value} name="owner" onChange={handleChange} >
                                 <option value="" selected>Selecione o proprietário</option>
                                     {
                                         owners.length> 0 &&                
@@ -166,7 +166,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                             </FormGroup> */}
                             <FormGroup>
                                 <label>Inquilino</label>
-                                <select value={form.renter.value} name="renter" onChange={handleChange} >
+                                <select value={data.renter.value} name="renter" onChange={handleChange} >
                                     <option value="" selected>Selecione o inquilino</option>
                                     <option value="vazio" selected>Vazio</option>
                                     {
@@ -182,7 +182,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                         <div className="formFlex">
                             <FormGroup>
                                 <label>Status</label>
-                                <select value={form.status.value} name="status" onChange={handleChange} >
+                                <select value={data.status.value} name="status" onChange={handleChange} >
                                     <option value="" selected>Selecione o Status do imóvel</option>
                                     <option value="vago" >Vago</option>
                                     <option value="alugado" >Alugado</option>
@@ -193,7 +193,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                     </form>            
                     <div className="formFlex">
                         <ButtonControl onClick={()=>handleSubmit()}>Salvar</ButtonControl> 
-                        <ButtonControl onClick={()=>handleDelete(form)}>Deletar</ButtonControl>   
+                        <ButtonControl onClick={()=>handleDelete(data)}>Deletar</ButtonControl>   
                         <ButtonControl onClick={()=>setView(!view)}>Cancelar</ButtonControl>
                     </div>
                 </ContainerForm>
