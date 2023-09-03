@@ -144,14 +144,27 @@ const Renters = () => {
     setLoading(true);
     setRenters([]);
     const response = await fetchInquilinos();
-    response.docs.forEach((item) => {
-      setRenters((prevState) => [...prevState, [item.data(), { id: item.id }]]);
+    
+    let newArray = []
+     response.docs.forEach((item) => {
+     newArray.push([item.data(), { id: item.id }])
     });
+    newArray.sort((a, b) => {
+      const nameA = a[0].name.toUpperCase();
+      const nameB = b[0].name.toUpperCase();
+    
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return true;
+      }
+    });
+    setRenters(newArray)
     setLoading(false);
     setListRenters(true);
   };
 
-  
   // const handleSubmit = async (e) => {
   //   setLoading(true);
   //   e.preventDefault();
