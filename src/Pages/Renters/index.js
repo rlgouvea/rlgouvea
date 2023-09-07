@@ -95,6 +95,10 @@ const Renters = () => {
       rg: "",
     },
     onSubmit: async (values) => {
+      values.name = values.name.toUpperCase()
+      values.maritalStatus=values.maritalStatus.toUpperCase()
+      values.profession=values.profession.toUpperCase()
+      values.nationality=values.nationality.toUpperCase()
       values.phone = values.phone.replace("_", "");
       values.phone2 = values.phone2.replace("_", "");
       values.phone3 = values.phone3.replace("_", "");
