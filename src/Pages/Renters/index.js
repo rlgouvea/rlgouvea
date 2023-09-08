@@ -33,6 +33,7 @@ const Renters = () => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("success");
 
+
   // const [form, setForm] = useState({
   //   name: {
   //     value: "",
@@ -182,6 +183,7 @@ const Renters = () => {
   //   }
   //   setLoading(false);
   // };
+
 
   const handleDelete = (item) => {
     console.log(item);
@@ -459,5 +461,6 @@ const Renters = () => {
     </div>
   );
 };
+
 
 export default Renters;

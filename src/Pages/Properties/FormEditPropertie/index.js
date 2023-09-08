@@ -133,7 +133,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                                         {
                                             owners.length> 0 &&                
                                             owners.map((owner, index)=>(
-                                                <option key={index} value={owner[0].name}>{owner[0].name}</option>
+                                                <option key={index} value={owner.name}>{owner.name}</option>
                                             ))
                                         }
                                     </select>    
@@ -173,7 +173,7 @@ const FormEditPropertie = ({propertie, owners, renters, handle, view, setView, h
                                         renters.length> 0 &&
                                     
                                         renters.map((renter, index)=>(
-                                            <option key={index} value={renter[0].name}>{renter[0].name}</option>
+                                            <option key={index} value={renter.name}>{renter.name}</option>
                                         ))
                                     }
                                 </select> 

@@ -1,12 +1,14 @@
 /* eslint-disable no-loop-func */
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import AlertPopup from "../../Assets/Components/AlertPopup"
 import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
 import Loading from "../../Assets/Components/Loader"
 import { createColection, createDocRelatory, fetchProperties, fetchProprietarios, fetchRelatories, fetchRelatory } from "../../Services/routes"
 import "./stylesReports.scss"
+import {Context} from '../../Private'
 
 const Reports = () => {
+    const { userRole } = useContext(Context);
     const [owners, setOwners] = useState([])
     const [properties, setProperties] = useState([])
     const [propertieSelect, setPropertieSelect] = useState([])
@@ -352,7 +354,9 @@ const Reports = () => {
                 />  
             }    
             <div className="formFlex">
-                <ButtonControl onClick={()=>setAction('register')} >Registrar</ButtonControl>
+                {(userRole ===   'admin' || userRole === 'atendente') &&
+                    <ButtonControl onClick={()=>setAction('register')} >Registrar</ButtonControl>
+                }
                 <ButtonControl onClick={()=>setAction('search')} >Consultar</ButtonControl>
             </div>
             {

@@ -20,7 +20,9 @@ export default function Home(){
       
       await signInWithEmailAndPassword(auth, email, password)
       .then((value) => {
-        console.log('Usuário logado com sucesso')
+        if(email === 'admin@imob.com'){
+          alert('super admin logado')
+        }
         
         // navegar para /admin
         navigate('/', { replace: true})

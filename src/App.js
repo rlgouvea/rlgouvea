@@ -7,22 +7,25 @@ import Properties from "./Pages/Properties";
 import NewContract from "./Pages/NewContract";
 import Reports from "./Pages/Reports";
 import Survey from "./Pages/Survey";
+import Admin from './Pages/Admin'
+import Register from './Pages/Register'
 
-import Private from "./Private"
+import Teste from './Pages/Teste'
+
+import {Private} from "./Private"
 import Login from "./Pages/Login";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* <Template> */}
         <Routes>
           <Route path="/login" element={<Login/>}/>
           <Route path="/" element={
-          <Private>
-            <Template>
-              <Home/>
-            </Template>
-          </Private>
+            <Private>
+                <Template>
+                  <Home/>
+                </Template>
+            </Private>
           } /> 
           <Route path="/owners" element={
             <Private>
@@ -32,42 +35,62 @@ function App() {
             </Private>
           } />
           <Route path="/renters" element={
-          <Private>
-            <Template>
-              <Renters/>
-            </Template>
-          </Private>
+            <Private>
+              <Template>
+                <Renters/>
+              </Template>
+            </Private>
           } />
           <Route path="/properties" element={
-          <Private>
-            <Template>
-              <Properties/>
-            </Template>
-          </Private>
+            <Private>
+              <Template>
+                <Properties/>
+              </Template>
+            </Private>
           } />
           <Route path="/newContract" element={
-          <Private>
-            <Template>
-              <NewContract/>
-            </Template>
-          </Private>
+            <Private>
+              <Template>
+                <NewContract/>
+              </Template>
+            </Private>
           } />
           <Route path="/reports" element={
-          <Private>
-            <Template>
-              <Reports/>
-            </Template>
-          </Private>
+            <Private>
+              <Template>
+                <Reports/>
+              </Template>
+            </Private>
           } />
           <Route path="/survey" element={
-          <Private>
-            <Template>
-              <Survey/>
-            </Template>
-          </Private>
+            <Private>
+              <Template>
+                <Survey/>
+              </Template>
+            </Private>
+          } />
+          <Route path="/admin" element={
+            <Private>
+              <Template>
+                <Admin/>
+              </Template>
+            </Private>
+          } />
+          <Route path="/register" element={
+            <Private>
+              <Template>
+                <Register/>
+              </Template>
+            </Private>
+          } />
+          <Route path="/teste" element={
+            <Private>
+              <Template>
+                <Teste/>
+              </Template>
+            </Private>
           } />
         </Routes>
-      {/* </Template> */}
     </BrowserRouter>
   );
 }

@@ -1,24 +1,17 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import AlertDelete from "../../Assets/Components/AlertDelete";
-import AlertPopup from "../../Assets/Components/AlertPopup";
-import FormEdit from "../../Assets/Components/FormEdit";
-import {
-  ButtonControl,
-  ContainerForm,
-  FormGroup,
-} from "../../Assets/Components/GlobalStyles";
-import {
-  changeOwner,
-  deleteProp,
-  fetchProprietarios,
-} from "../../Services/routes";
-import { addProp } from "../../Services/routes";
-import "./ownerStyle.scss";
-import { MdOutlineDeleteForever } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import Table from "../../Assets/Components/Table";
-import Loader from "../../Assets/Components/Loader";
+import { useEffect, useContext } from "react"
+import { useState } from "react"
+import AlertDelete from "../../Assets/Components/AlertDelete"
+import AlertPopup from "../../Assets/Components/AlertPopup"
+import FormEdit from "../../Assets/Components/FormEdit"
+import { ButtonControl, ContainerForm, FormGroup } from "../../Assets/Components/GlobalStyles"
+import { changeOwner, deleteProp, fetchProprietarios } from "../../Services/routes"
+import {addProp} from "../../Services/routes"
+import "./ownerStyle.scss"
+import { MdOutlineDeleteForever } from "react-icons/md"
+import { FaEdit } from "react-icons/fa"
+import Table from "../../Assets/Components/Table"
+import Loader from "../../Assets/Components/Loader"
+import {Context} from '../../Private'
 
 const Owners = ({ newRegister, setNewRegister }) => {
   const [owners, setOwners] = useState([]);
@@ -164,6 +157,7 @@ const Owners = ({ newRegister, setNewRegister }) => {
       error: false,
     },
   };
+
 
   const [form, setForm] = useState({
     name: {
@@ -374,6 +368,7 @@ const Owners = ({ newRegister, setNewRegister }) => {
       setAlert(true);
       setListOwners(false);
 
+
       setOwners([]);
       const response = await fetchProprietarios();
       response.docs.forEach((item) => {
@@ -430,6 +425,7 @@ const Owners = ({ newRegister, setNewRegister }) => {
       setLoading(false);
     }
   };
+
 
   const handleReload = () => {
     getOwners();

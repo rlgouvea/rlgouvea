@@ -85,6 +85,7 @@ const Properties = () => {
     },
   });
 
+
   const initialState = {
     codigo: {
       value: "",
@@ -151,6 +152,7 @@ const Properties = () => {
     getProperties();
   }, [newRegisterOwner]);
 
+
   const getProperties = async () => {
     setProperties([]);
     const response = await fetchProperties();
@@ -166,6 +168,7 @@ const Properties = () => {
     // response.docs.forEach((item) => {
     //   setOwners((prevState) => [...prevState, [item.data(), { id: item.id }]]);
     // });
+
 
     let newArray = [];
     response.docs.forEach((item) => {
@@ -200,6 +203,7 @@ const Properties = () => {
     newArray.sort((a, b) => {
       const nameA = a[0].name.toUpperCase();
       const nameB = b[0].name.toUpperCase();
+
 
       if (nameA < nameB) {
         return -1;
@@ -289,6 +293,7 @@ const Properties = () => {
       setLoading(false);
       console.log(response);
     }
+
     setLoading(false);
   };
 
