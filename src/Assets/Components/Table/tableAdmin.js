@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, ptBR } from '@mui/x-data-grid';
 import './styles.scss'
 
 export default function DataTable({users, handleEdit}) {    
@@ -18,7 +18,9 @@ export default function DataTable({users, handleEdit}) {
         id:users[x][1].id,
         login:users[x][0].login, 
         role:users[x][0].role,
+        active:users[x][0].active,
         uid:users[x][0].uid,
+        name:users[x][0].name,
       }
       rowsConfig = rowsConfig.concat(newItem)
     }
@@ -32,6 +34,11 @@ export default function DataTable({users, handleEdit}) {
   const columns = [
     //{ field: 'id', headerName: 'ID', width: 70 },
     { 
+      field: 'name', 
+      headerName: 'Nome', 
+      width: 300 
+    },
+    { 
       field: 'login', 
       headerName: 'Login', 
       width: 300 
@@ -41,6 +48,14 @@ export default function DataTable({users, handleEdit}) {
       headerName: 'Permissão', 
       sortable: false,
       width: 130 
+    },
+    { 
+      field: 'active', 
+      headerName: 'Ativo', 
+      sortable: false,
+      width: 130,
+      valueGetter: (params) =>
+      params.row.active ? 'Sim' : 'Não',
     },
   ];  
    
@@ -54,7 +69,8 @@ export default function DataTable({users, handleEdit}) {
           rowsPerPageOptions={[5]}
           //checkboxSelection
           GridRowParams                    
-          onRowClick={(e)=>handleEdit(e.row)}          
+          onRowClick={(e)=>handleEdit(e.row)}       
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}   
         />              
       } 
     </div>

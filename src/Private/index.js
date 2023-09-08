@@ -1,12 +1,13 @@
 import { createContext, useCallback, useState, useEffect } from "react"
 
 import { auth, db } from "../Configs/FirebaseConfig"
-import { onAuthStateChanged } from "firebase/auth"
+import { onAuthStateChanged, signOut } from "firebase/auth"
 
 import { Navigate } from "react-router-dom"
 
 import { getAuth } from "firebase/auth"
 import { collection, query, where, getDocs } from "firebase/firestore"
+import { fetchUsers } from "../Services/routes"
 
 const Context = createContext();
 
@@ -14,6 +15,8 @@ function Private({ children }){
   const [userRole, setUserRole] = useState("")
   const [loading, setLoading] = useState(true)
   const [signed, setSigned] = useState(false)
+  const [UserActive, setUserActive] = useState(false)
+  const [userData, setUserData] = useState()
   
   useEffect(() => {
     async function checkLogin(){
@@ -24,7 +27,7 @@ function Private({ children }){
             uid: user.uid,
             email: user.email,
           }
-
+          getUserData(userData.uid)
           localStorage.setItem('@detailUser', JSON.stringify(userData))
           verificAdmin()
           
@@ -43,6 +46,16 @@ function Private({ children }){
     
   },[])  
 
+  const getUserData = async (uid) => {
+    const response = await fetchUsers();
+    let users = []
+    response.docs.forEach((item) => {
+      users.push([item.data()])
+    });
+    const userLoged =  users.find(user => user[0].uid === uid)
+    setUserData(userLoged[0])
+  }
+
   const verificAdmin = async () => {
     const auth = getAuth();
     const user = auth.currentUser
@@ -52,9 +65,14 @@ function Private({ children }){
     const querySnapshot = await getDocs(userRoles);
     querySnapshot.forEach((doc) => {
       setUserRole(doc.data().role);
+      setUserActive(doc.data().active);
+      if(doc.data().active){
+        setSigned(true)
+      } else{
+        signOut(auth)
+      }
     });
     setLoading(false)
-    setSigned(true)
   }
 
   if(loading){
@@ -67,7 +85,7 @@ function Private({ children }){
     return <Navigate to='/login'/>
   }
   return(
-    <Context.Provider value={{userRole}}>
+    <Context.Provider value={{userRole, userData}}>
       {children}
     </Context.Provider>
   ) 

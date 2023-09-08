@@ -1,99 +1,103 @@
-import { db } from "../Configs/FirebaseConfig"
-import { addDoc, doc, query, getDocs, collection, setDoc } from "firebase/firestore"
+import { db } from "../Configs/FirebaseConfig";
+import {
+  addDoc,
+  doc,
+  query,
+  getDocs,
+  collection,
+  setDoc,
+} from "firebase/firestore";
 import {
   getStorage,
   ref,
   listAll,
   getDownloadURL,
   deleteObject,
-  uploadBytesResumable
-} from 'firebase/storage'
+  uploadBytesResumable,
+} from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
 /******Função que faz o Get dos proprietários******/
 export const fetchProprietarios = async () => {
-  const data = db.collection('proprietarios')
-  const response = await data.get()
-  return response
-}
+  const data = db.collection("proprietarios");
+  const response = await data.get();
+  return response;
+};
 
 /******Função que faz o Get dos inquilinos******/
 export const fetchInquilinos = async () => {
-  const data = db.collection('inquilinos')
-  const response = await data.get()
-  return response
-}
+  const data = db.collection("inquilinos");
+  const response = await data.get();
+  return response;
+};
 
 /******Função que faz o Get dos usuários******/
 export const fetchUsers = async () => {
-  const data = db.collection('users')
-  const response = await data.get()
-  return response
-}
+  const data = db.collection("users");
+  const response = await data.get();
+  return response;
+};
 
 /******Função que faz o Get dos imóveis******/
 export const fetchProperties = async () => {
-  const data = db.collection('imoveis')
-  const response = await data.get()
-  return response
-}
+  const data = db.collection("imoveis");
+  const response = await data.get();
+  return response;
+};
 
 /******Função que faz o Get geral dos relatorios******/
 export const fetchRelatories = async () => {
-  const data = db.collection('relatorios')
-  const response = await data.get()
-  return response
-}
+  const data = db.collection("relatorios");
+  const response = await data.get();
+  return response;
+};
 
 /******Função que faz o Get especifico dos relatorios******/
 export const fetchRelatory = async (period) => {
-  const data = db.collection(`relatorios/${period}`)
-  const response = await data.get()
+  const data = db.collection(`relatorios/${period}`);
+  const response = await data
+    .get()
     .then((doc) => {
-      return (
-        { status: 200, data: doc }
-      )
+      return { status: 200, data: doc };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      return { status: 400 };
+    });
+  return response;
+};
 
 /******Função que faz o Get das imagens de relatorio******/
-export const imagesSurvey = (item, setImages) => {      
-  setImages([])
-  const storage = getStorage()  
-  const listRef = ref(storage, `survey/${item.propertie}-${item.renter}`)     
+export const imagesSurvey = (item, setImages) => {
+  setImages([]);
+  const storage = getStorage();
+  const listRef = ref(storage, `survey/${item.propertie}-${item.renter}`);
   listAll(listRef)
-  //storage.ref().child(storage, `survey/${item.propertie}-${item.renter}`).listAll()
-    .then(res => {   
-      res.items.map((prefix)=>{         
-        const listRefix = ref(storage, `survey/${item.propertie}-${item.renter}/${prefix.name}`)               
-        getDownloadURL(listRefix)
-          .then((url) => {                       
-            setImages(prevState => [...prevState, { name: prefix.name, url: url}])                                               
-          })              
-      })                   
-      return(
-        {status: 200}
-      )                           
-    })                    
-    .catch(err => {
-      return(
-        {status: 400, data: err}
-      )
+    //storage.ref().child(storage, `survey/${item.propertie}-${item.renter}`).listAll()
+    .then((res) => {
+      res.items.map((prefix) => {
+        const listRefix = ref(
+          storage,
+          `survey/${item.propertie}-${item.renter}/${prefix.name}`
+        );
+        getDownloadURL(listRefix).then((url) => {
+          setImages((prevState) => [
+            ...prevState,
+            { name: prefix.name, url: url },
+          ]);
+        });
+      });
+      return { status: 200 };
     })
-}
-
+    .catch((err) => {
+      return { status: 400, data: err };
+    });
+};
 
 /******Função que adiciona inquilino******/
 export const addRenter = async (form) => {
-
-  const response = await db.collection("inquilinos").add(
-    {
+  const response = await db
+    .collection("inquilinos")
+    .add({
       name: form.name.value,
       phone: form.phone.value,
       phone2: form.phone2.value,
@@ -105,54 +109,44 @@ export const addRenter = async (form) => {
       email: form.email.value,
       cpf: form.cpf.value,
       rg: form.rg.value,
-    }
-  )
+    })
     .then((doc) => {
-      return (
-        { data: doc, status: 200 }
-      )
+      return { data: doc, status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
+      return { status: 400 };
+    });
 
-  return response
-}
+  return response;
+};
 
 /******Função que adiciona usuário******/
-export const addUser = async (email, uid, role) => {
+export const addUser = async (email, uid, role, name) => {
 
-  console.log('form: ' + email, uid)
-
-  const response = await db.collection("users").add(
-    {
+  const response = await db
+    .collection("users")
+    .add({
       login: email,
       uid: uid,
-      role: role
-    }
-  )
+      role: role,
+      name: name,
+      active: true
+    })
     .then((doc) => {
-      return (
-        { data: doc, status: 200 }
-      )
+      return { data: doc, status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
+      return { status: 400 };
+    });
 
-  return response
-}
+  return response;
+};
 
 /******Função que adiciona proprietário******/
 export const addProp = async (form) => {
-
-
-  const response = await db.collection("proprietarios").add(
-    {
+  const response = await db
+    .collection("proprietarios")
+    .add({
       name: form.name.value,
       phone: form.phone.value,
       adress: form.adress.value,
@@ -162,7 +156,7 @@ export const addProp = async (form) => {
       zip_code: form.zip_code.value,
       maritalStatus: form.maritalStatus.value,
       profession: form.profession.value,
-      birth:form.birth.value, 
+      birth: form.birth.value,
       email: form.email.value,
       cpf: form.cpf.value,
       rg: form.rg.value,
@@ -176,7 +170,7 @@ export const addProp = async (form) => {
       sonZip_code: form.sonZip_code.value,
       sonMaritalStatus: form.sonMaritalStatus.value,
       sonProfession: form.sonProfession.value,
-      sonBirth: form.sonBirth.value ,
+      sonBirth: form.sonBirth.value,
       sonEmail: form.sonEmail.value,
       sonCpf: form.sonCpf.value,
       sonRg: form.sonRg.value,
@@ -185,27 +179,23 @@ export const addProp = async (form) => {
       ag: form.ag.value,
       count: form.count.value,
       nameCount: form.nameCount.value,
-    }
-  )
+    })
     .then((doc) => {
-      return (
-        { data: doc, status: 200 }
-      )
+      return { data: doc, status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
+      return { status: 400 };
+    });
 
-  return response
-}
+  return response;
+};
 
 /******Função que adiciona imovel******/
 export const addPropertie = async (form, ownerRegister) => {
-
-  const response = await db.collection(`imoveis`).doc(form.codigo.value).set(
-    {
+  const response = await db
+    .collection(`imoveis`)
+    .doc(form.codigo.value)
+    .set({
       codigo: form.codigo.value,
       city: form.city.value,
       state: form.state.value,
@@ -216,197 +206,188 @@ export const addPropertie = async (form, ownerRegister) => {
       owner: ownerRegister,
       renter: form.renter.value,
       status: form.status.value,
-      description: form.description.value
-    }
-  ).then((doc) => {
-    return (
-      { status: 200 }
-    )
-  })
-    .catch((err) => {
-      return (
-        { status: 400 }
-      )
+      description: form.description.value,
     })
+    .then((doc) => {
+      return { status: 200 };
+    })
+    .catch((err) => {
+      return { status: 400 };
+    });
 
-  return response
-
-}
+  return response;
+};
 
 /******Função que cria novo documento de relatorio, se não existir ainda será criado pra depois salvar os dados completos******/
 export const createDocRelatory = async (item, data) => {
   //const response = await db.collection(`relatorios/${item.owner}/${item.reference}`).doc(item.date).set(data)
   //const response = await db.collection(`relatorios`).doc(item.owner).collection(item.reference).doc(item.date).set(data)
 
-  const response = await db.collection(`relatorios`).doc(item.propertie).set({ status: 'criando' })
+  const response = await db
+    .collection(`relatorios`)
+    .doc(item.propertie)
+    .set({ status: "criando" })
 
     .then((doc) => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
+      return { status: 400 };
+    });
 
-  return response
-
-}
+  return response;
+};
 
 /******Função que cria nova coleção de relatorio******/
 export const createColection = async (item, data) => {
   //const response = await db.collection(`relatorios/${item.owner}/${item.reference}`).doc(item.date).set(data)
   //const response = await db.collection(`relatorios`).doc(item.owner).collection(item.reference).doc(item.date).set(data)
 
-  const response = await db.collection(`relatorios`).doc(item.propertie).collection(item.reference).doc(item.date).set(data)
+  const response = await db
+    .collection(`relatorios`)
+    .doc(item.propertie)
+    .collection(item.reference)
+    .doc(item.date)
+    .set(data)
 
     .then((doc) => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
+      return { status: 400 };
+    });
 
-  return response
-
-}
+  return response;
+};
 
 /*****Função que adiciona imagens de vistoria *****/
 export const addSurvey = async (data, setUploadProgress, setLoading) => {
-  const storage = getStorage()
-  await data.images.forEach(file => {
-    setLoading(true)
-    const storageRef = ref(storage, `survey/${data.propertie}-${data.renter}/` + file.name);
+  const storage = getStorage();
+  await data.images.forEach((file) => {
+    setLoading(true);
+    const storageRef = ref(
+      storage,
+      `survey/${data.propertie}-${data.renter}/` + file.name
+    );
     const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on('state_changed',
+    uploadTask.on(
+      "state_changed",
       (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress)
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
         switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
+          case "paused":
+            console.log("Upload is paused");
             break;
-          case 'running':
-            console.log('Upload is running');
+          case "running":
+            console.log("Upload is running");
 
             break;
         }
-
       },
       (error) => {
         switch (error.code) {
-          case 'storage/unauthorized':
-            console.log('unauthorized');
+          case "storage/unauthorized":
+            console.log("unauthorized");
             break;
-          case 'storage/canceled':
-            console.log('canceled');
-            return (
-              { status: 400 }
-            )
+          case "storage/canceled":
+            console.log("canceled");
+            return { status: 400 };
             break;
-          case 'storage/unknown':
-            console.log('unknown');
+          case "storage/unknown":
+            console.log("unknown");
             break;
         }
-
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref)
-        setLoading(false)
+        getDownloadURL(uploadTask.snapshot.ref);
+        setLoading(false);
       }
-    )
-  })
-  // .then(() => {    
+    );
+  });
+  // .then(() => {
   //   return(
   //     {status: 200}
   //   )
   // })
-  // .catch((err) => {    
+  // .catch((err) => {
   //   return(
   //     {status: 400}
   //   )
   // })
-  console.log('finalizou, ')
+  console.log("finalizou, ");
   //return response
-}
+};
 
 /******Função que faz o delete do inquilino******/
 export const deleteRenter = async (id) => {
-  const response = await db.collection("inquilinos").doc(id).delete()
+  const response = await db
+    .collection("inquilinos")
+    .doc(id)
+    .delete()
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      return { status: 400 };
+    });
+  return response;
+};
 
-/******Função que faz o delete do usuário******/ 
+/******Função que faz o delete do usuário******/
 export const deleteUserFirestore = async (id) => {
-  const response = await db.collection("users").doc(id).delete()
+  const response = await db
+    .collection("users")
+    .doc(id)
+    .delete()
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      console.log(err)
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      console.log(err);
+      return { status: 400 };
+    });
+  return response;
+};
 
 /******Função que faz o delete dos proprietários******/
 export const deleteProp = async (id) => {
-  const response = await db.collection("proprietarios").doc(id).delete()
+  const response = await db
+    .collection("proprietarios")
+    .doc(id)
+    .delete()
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      return { status: 400 };
+    });
+  return response;
+};
 
 /******Função que faz o delete dos imoveis******/
 export const deletePropertie = async (id) => {
-  const response = await db.collection("imoveis").doc(id).delete()
+  const response = await db
+    .collection("imoveis")
+    .doc(id)
+    .delete()
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      return { status: 400 };
+    });
+  return response;
+};
 
 /******Função que edição do inquilino******/
 export const changeRenter = async (item) => {
-
-  const response = await db.collection(`inquilinos`).doc(item.id).update(
-    {
+  const response = await db
+    .collection(`inquilinos`)
+    .doc(item.id)
+    .update({
       name: item.name,
       phone: item.phone,
       phone2: item.phone2,
@@ -418,49 +399,42 @@ export const changeRenter = async (item) => {
       email: item.email,
       cpf: item.cpf,
       rg: item.rg,
-    }
-  )
+    })
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      return { status: 400 };
+    });
+  return response;
+};
 
 /******Função que edição do usuário******/
 export const changeUser = async (item) => {
-
-  const response = await db.collection(`users`).doc(item.id).update(
-    {
+  const response = await db
+    .collection(`users`)
+    .doc(item.id)
+    .update({
+      uid: item.uid,
       login: item.login,
       role: item.role,
-      uid: item.uid
-    }
-  )
+      active: item.active,
+    })
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      return { status: 400 };
+    });
+  return response;
+};
 
 /******Função que edição dos proprietarios******/
 export const changeOwner = async (item) => {
-
-  const response = await db.collection(`proprietarios`).doc(item.id).update(
-    {
+  const response = await db
+    .collection(`proprietarios`)
+    .doc(item.id)
+    .update({
       name: item.name,
       phone: item.phone,
       adress: item.adress,
@@ -493,25 +467,22 @@ export const changeOwner = async (item) => {
       ag: item.ag,
       count: item.count,
       nameCount: item.nameCount,
-    }
-  )
+    })
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
+      return { status: 400 };
+    });
+  return response;
+};
 
 /******Função que edição dos imoveis******/
 export const changePropertie = async (item, ownerEditRegister) => {
-  const response = await db.collection(`imoveis`).doc(item.id.value).update(
-    {
+  const response = await db
+    .collection(`imoveis`)
+    .doc(item.id.value)
+    .update({
       codigo: item.codigo.value,
       city: item.city.value,
       state: item.state.value,
@@ -521,19 +492,13 @@ export const changePropertie = async (item, ownerEditRegister) => {
       zip_code: item.zip_code.value,
       owner: ownerEditRegister,
       renter: item.renter.value,
-      status: item.status.value
-    }
-  )
+      status: item.status.value,
+    })
     .then(() => {
-      return (
-        { status: 200 }
-      )
+      return { status: 200 };
     })
     .catch((err) => {
-      return (
-        { status: 400 }
-      )
-    })
-  return response
-}
-
+      return { status: 400 };
+    });
+  return response;
+};
