@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import ImageLoading from "../../img/imovel.jpg"
+import { Backdrop } from "@mui/material";
 
 const Loading = () => {
   const rotate = keyframes`
@@ -26,28 +27,46 @@ const Loading = () => {
     transform: translate(-50%, -50%);
   `;
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "0px",
-        bottom: "0px",
-        left: "0px",
-        right: "0px",
-        zIndex: "99999",
-        //backgroundColor: "white",
-        textAlign: "center",
-        alignItems: "center",
-      }}
+    // <div
+    //   style={{
+    //     position: "absolute",
+    //     top: "0px",
+    //     bottom: "0px",
+    //     left: "0px",
+    //     right: "0px",
+    //     zIndex: "99999",
+    //     //backgroundColor: "white",
+    //     textAlign: "center",
+    //     alignItems: "center",
+    //   }}
+    // >
+    //   <h1
+    //     style={{
+    //       position: "absolute",
+    //       top: "50%",
+    //       left: "50%",
+    //       transform: "translate(-50%, -50%)",
+    //     }}
+    //   >
+    //     <Rotate style={{backGroundImage: ImageLoading}}>
+    //         <img 
+    //         style={{
+    //             width:"100%", 
+    //             borderRadius:"100%",
+    //             height:"100%",
+    //             boxShadow: "0px 0px 50px black"
+    //         }} 
+    //         src={ImageLoading} alt=""
+    //         />
+    //     </Rotate>
+    //   </h1>
+    // </div>
+    <Backdrop
+      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={true}
+      // onClick={handleClose}
     >
-      <h1
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <Rotate style={{backGroundImage: ImageLoading}}>
+      <Rotate style={{backGroundImage: ImageLoading}}>
             <img 
             style={{
                 width:"100%", 
@@ -58,8 +77,7 @@ const Loading = () => {
             src={ImageLoading} alt=""
             />
         </Rotate>
-      </h1>
-    </div>
+    </Backdrop>
   );
 };
 
