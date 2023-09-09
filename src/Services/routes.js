@@ -3,6 +3,7 @@ import {
   addDoc,
   doc,
   query,
+  where,
   getDocs,
   collection,
   setDoc,
@@ -16,6 +17,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
+import { async } from "q";
 
 /******Função que faz o Get dos proprietários******/
 export const fetchProprietarios = async () => {
@@ -52,9 +54,9 @@ export const fetchRelatories = async () => {
   return response;
 };
 
-/******Função que faz o Get especifico dos relatorios******/
-export const fetchRelatory = async (period) => {
-  const data = db.collection(`relatorios/${period}`);
+/******Função que faz o Get dos relatorios******/
+export const fetchRelatory = async () => {
+  const data = db.collection(`relatorios`);
   const response = await data
     .get()
     .then((doc) => {
@@ -66,19 +68,49 @@ export const fetchRelatory = async (period) => {
   return response;
 };
 
-/******Função que faz o Get das imagens de relatorio******/
-export const imagesSurvey = (item, setImages) => {
+/******Função que faz o Get das imagens de vistoria em geral******/
+export const fetchImagesSurvey = async () => {
+  const data = db.collection(`vistorias`);
+  const response = await data.get()
+    // .then((doc) => {
+    //   return { status: 200, data: doc };
+    // })
+    // .catch((err) => {
+    //   return { status: 400 };
+    // });
+  return response;
+};
+
+/******Função que faz o Get das imagens de vistoria de imovel especifico******/
+export const fetchEspecificSurvey = async ({propertie}) => {
+  const data = db.collection(`vistorias`);
+  const imb = data.where('imovel', '==', propertie)
+  const response = await imb.get()
+  return response;
+};
+
+/******Função que faz o Get das imagens de vistoria******/
+export const imagesSurvey = async (item, setImages) => {
   setImages([]);
-  const storage = getStorage();
-  const listRef = ref(storage, `survey/${item.propertie}-${item.renter}`);
+  const storage = await getStorage();
+  const listRef = await ref(
+    storage,
+    item.renter
+      ? `survey/${item.propertie}/${item.renter}`
+      : `survey/${item.propertie}`
+  );
   listAll(listRef)
     //storage.ref().child(storage, `survey/${item.propertie}-${item.renter}`).listAll()
     .then((res) => {
       res.items.map((prefix) => {
         const listRefix = ref(
           storage,
-          `survey/${item.propertie}-${item.renter}/${prefix.name}`
+          // `survey/${item.propertie}/${item.renter}/${prefix.name}`
+          item.renter
+            ? `survey/${item.propertie}/${item.renter}`
+            : `survey/${item.propertie}`
         );
+        console.log("res ", prefix);
         getDownloadURL(listRefix).then((url) => {
           setImages((prevState) => [
             ...prevState,
@@ -95,10 +127,9 @@ export const imagesSurvey = (item, setImages) => {
 
 /******Função que adiciona inquilino******/
 export const addRenter = async (form) => {
-
-
-  const response = await db.collection("inquilinos").add(
-    {
+  const response = await db
+    .collection("inquilinos")
+    .add({
       name: form.name,
       phone: form.phone,
       phone2: form.phone2,
@@ -110,8 +141,7 @@ export const addRenter = async (form) => {
       email: form.email,
       cpf: form.cpf,
       rg: form.rg,
-    }
-  )
+    })
     .then((doc) => {
       return { data: doc, status: 200 };
     })
@@ -124,7 +154,6 @@ export const addRenter = async (form) => {
 
 /******Função que adiciona usuário******/
 export const addUser = async (email, uid, role, name) => {
-
   const response = await db
     .collection("users")
     .add({
@@ -132,7 +161,7 @@ export const addUser = async (email, uid, role, name) => {
       uid: uid,
       role: role,
       name: name,
-      active: true
+      active: true,
     })
     .then((doc) => {
       return { data: doc, status: 200 };
@@ -220,6 +249,27 @@ export const addPropertie = async (form, ownerRegister) => {
   return response;
 };
 
+/******Função que adiciona novo relatório******/
+export const addRelatory = async (form) => {
+  const response = await db
+    .collection("relatorios")
+    .add({
+      descricao: form.description,
+      pagador: form.payer,
+      data: form.date,
+      imovel: form.propertie,
+      valor: form.value,
+    })
+    .then((doc) => {
+      return { data: doc, status: 200 };
+    })
+    .catch((err) => {
+      return { status: 400 };
+    });
+
+  return response;
+};
+
 /******Função que cria novo documento de relatorio, se não existir ainda será criado pra depois salvar os dados completos******/
 export const createDocRelatory = async (item, data) => {
   //const response = await db.collection(`relatorios/${item.owner}/${item.reference}`).doc(item.date).set(data)
@@ -265,11 +315,12 @@ export const createColection = async (item, data) => {
 /*****Função que adiciona imagens de vistoria *****/
 export const addSurvey = async (data, setUploadProgress, setLoading) => {
   const storage = getStorage();
+  const linkImages = [];
   await data.images.forEach((file) => {
     setLoading(true);
     const storageRef = ref(
       storage,
-      `survey/${data.propertie}-${data.renter}/` + file.name
+      `survey/${data.propertie}/${data.renter}/${file.name}-${new Date()}`
     );
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -303,24 +354,27 @@ export const addSurvey = async (data, setUploadProgress, setLoading) => {
             break;
         }
       },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref);
-        setLoading(false);
+      async () => {
+        await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          linkImages.push(url);
+          console.log("novo url ", url);
+        });
+        if(linkImages.length === data.images.length){
+           await db.collection("vistorias").add(
+            {
+              imovel: data.propertie,
+              inquilino: data.renter,
+              imagens: linkImages,
+              data: data.data
+            }
+          )
+          setLoading(false);
+          console.log("finalizou, ");
+        }
       }
     );
   });
-  // .then(() => {
-  //   return(
-  //     {status: 200}
-  //   )
-  // })
-  // .catch((err) => {
-  //   return(
-  //     {status: 400}
-  //   )
-  // })
-  console.log("finalizou, ");
-  //return response
+  
 };
 
 /******Função que faz o delete do inquilino******/
@@ -384,6 +438,21 @@ export const deletePropertie = async (id) => {
   return response;
 };
 
+/******Função que faz o delete dos relatórios******/
+export const deleteRelatory = async (id) => {
+  const response = await db
+    .collection("relatorios")
+    .doc(id)
+    .delete()
+    .then(() => {
+      return { status: 200 };
+    })
+    .catch((err) => {
+      return { status: 400 };
+    });
+  return response;
+};
+
 /******Função que edição do inquilino******/
 export const changeRenter = async (item) => {
   const response = await db
@@ -427,6 +496,27 @@ export const changeUser = async (item) => {
     })
     .catch((err) => {
       return { status: 400 };
+    });
+  return response;
+};
+
+/******Função que edição do relatório******/
+export const changeRelatory = async (item) => {
+  const response = await db
+    .collection(`relatorios`)
+    .doc(item.id)
+    .update({
+      descricao: item.description,
+      pagador: item.payer,
+      data: item.date,
+      imovel: item.propertie,
+      valor: item.value,
+    })
+    .then(() => {
+      return { status: 200 };
+    })
+    .catch((err) => {
+      return { status: 400, err };
     });
   return response;
 };
